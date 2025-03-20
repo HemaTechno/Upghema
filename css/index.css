@@ -92,12 +92,27 @@ h1 span {
 }
 
 .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     cursor: pointer;
-    width: 100px;
+    width: 120px;
+    height: 120px;
+    transition: 0.3s;
 }
+
+.btn img {
+    width: 60px; /* حجم الصورة داخل الزر */
+    height: 60px;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 
 footer {
     position: fixed;
