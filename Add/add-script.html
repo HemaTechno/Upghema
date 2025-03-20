@@ -203,6 +203,79 @@
             copyMessage.style.display = "none";
         }, 3000);
     }
+
+
+
+    const discordWebhookURL = "https://discord.com/api/webhooks/1352331396185718844/q6DgscH7DoaQVq71npXhDfsf1yn62Ucn0rHZheQeRNv8rdI146B3L2N3n2uK38ivv_Qi"; // ضع رابط الويب هوك هنا
+
+    document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById("title").value;
+        const mapName = document.getElementById("mapName").value;
+        const description = document.getElementById("description").value;
+        const scriptName = document.getElementById("scriptName").value;
+        const imageFile = document.getElementById("image").files[0];
+        const timestamp = new Date().toLocaleDateString();
+
+        if (!imageFile) {
+            alert("يرجى رفع صورة.");
+            return;
+        }
+
+        try {
+            const storageRef = storage.ref(`scripts/${imageFile.name}`);
+            await storageRef.put(imageFile);
+            const imageUrl = await storageRef.getDownloadURL();
+
+            const docRef = await db.collection("scripts").add({
+                title,
+                mapName,
+                description,
+                scriptName,
+                imageUrl,
+                addedDate: timestamp
+            });
+
+            const scriptUrl = `https://h-scripts.site/view.html?id=${docRef.id}`;
+            copyToClipboard(scriptUrl);
+            showCopyMessage();
+
+            // إرسال البيانات إلى ديسكورد
+            sendToDiscord(title, mapName, description, scriptUrl, imageUrl);
+
+            document.getElementById("addScriptForm").reset();
+        } catch (error) {
+            console.error("حدث خطأ:", error);
+            alert("حدث خطأ أثناء إضافة السكربت.");
+        }
+    });
+
+    function sendToDiscord(title, mapName, description, scriptUrl, imageUrl) {
+        const payload = {
+            embeds: [{
+                title: `🛠️ سكربت جديد مضاف!`,
+                color: 16711680, // اللون الأحمر في ديسكورد
+                fields: [
+                    { name: "📌 العنوان:", value: title, inline: false },
+                    { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
+                    { name: "📝 الوصف:", value: description, inline: false },
+                    { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false }
+                ],
+                image: { url: imageUrl },
+                footer: { text: "تمت الإضافة بنجاح ✅" }
+            }]
+        };
+
+        fetch(discordWebhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(error => console.error("خطأ في إرسال البيانات إلى ديسكورد:", error));
+    }
+
+
+    
 </script>
 
 </body>
