@@ -8,8 +8,12 @@
 </head>
 <body>
 
-    <div class="sidebar closed" id="sidebar">
-        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <!-- زر فتح القائمة -->
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- الشريط الجانبي -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">×</button>
         <h2>لوحة التحكم</h2>
         <ul>
             <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
@@ -19,26 +23,23 @@
         </ul>
     </div>
 
-    <div class="main-content" id="main-content">
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
         <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
 
     <script>
         function toggleSidebar() {
             var sidebar = document.getElementById("sidebar");
-            var mainContent = document.getElementById("main-content");
-
-            sidebar.classList.toggle("closed");
-
-            if (sidebar.classList.contains("closed")) {
-                mainContent.style.marginLeft = "60px"; 
-            } else {
-                mainContent.style.marginLeft = "250px"; 
-            }
+            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
         }
 
         function loadPage(page) {
             document.getElementById("content-frame").src = page;
+        }
+
+        function logout() {
+            alert("تم تسجيل الخروج!");
         }
     </script>
 
