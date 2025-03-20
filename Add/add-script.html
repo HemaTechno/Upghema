@@ -131,7 +131,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage-compat.js"></script>
-
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
@@ -147,66 +146,7 @@
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const title = document.getElementById("title").value;
-        const mapName = document.getElementById("mapName").value;
-        const description = document.getElementById("description").value;
-        const scriptName = document.getElementById("scriptName").value;
-        const imageFile = document.getElementById("image").files[0];
-        const timestamp = new Date().toLocaleDateString();
-
-        if (!imageFile) {
-            alert("يرجى رفع صورة.");
-            return;
-        }
-
-        try {
-            const storageRef = storage.ref(`scripts/${imageFile.name}`);
-            await storageRef.put(imageFile);
-            const imageUrl = await storageRef.getDownloadURL();
-
-            const docRef = await db.collection("scripts").add({
-                title,
-                mapName,
-                description,
-                scriptName,
-                imageUrl,
-                addedDate: timestamp
-            });
-
-            const scriptUrl = `https://hematech.xyz/view.html?id=${docRef.id}`;
-            copyToClipboard(scriptUrl);
-            showCopyMessage();
-
-            document.getElementById("addScriptForm").reset();
-        } catch (error) {
-            console.error("حدث خطأ:", error);
-            alert("حدث خطأ أثناء إضافة السكربت.");
-        }
-    });
-
-    function copyToClipboard(text) {
-        const tempInput = document.createElement("input");
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-    }
-
-    function showCopyMessage() {
-        const copyMessage = document.getElementById("copyMessage");
-        copyMessage.style.display = "block";
-        setTimeout(() => {
-            copyMessage.style.display = "none";
-        }, 3000);
-    }
-
-
-
-    const discordWebhookURL = "https://discord.com/api/webhooks/1352331396185718844/q6DgscH7DoaQVq71npXhDfsf1yn62Ucn0rHZheQeRNv8rdI146B3L2N3n2uK38ivv_Qi"; // ضع رابط الويب هوك هنا
+    const discordWebhookURL = "https://discord.com/api/webhooks/1352331396185718844/q6DgscH7DoaQVq71npXhDfsf1yn62Ucn0rHZheQeRNv8rdI146B3L2N3n2uK38ivv_Qi";
 
     document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -251,11 +191,28 @@
         }
     });
 
+    function copyToClipboard(text) {
+        const tempInput = document.createElement("input");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+    }
+
+    function showCopyMessage() {
+        const copyMessage = document.getElementById("copyMessage");
+        copyMessage.style.display = "block";
+        setTimeout(() => {
+            copyMessage.style.display = "none";
+        }, 3000);
+    }
+
     function sendToDiscord(title, mapName, description, scriptUrl, imageUrl) {
         const payload = {
             embeds: [{
                 title: `🛠️ سكربت جديد مضاف!`,
-                color: 16711680, // اللون الأحمر في ديسكورد
+                color: 16711680,
                 fields: [
                     { name: "📌 العنوان:", value: title, inline: false },
                     { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
@@ -273,9 +230,6 @@
             body: JSON.stringify(payload)
         }).catch(error => console.error("خطأ في إرسال البيانات إلى ديسكورد:", error));
     }
-
-
-    
 </script>
 
 </body>
