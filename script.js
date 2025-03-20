@@ -35,8 +35,7 @@ function loadPage(page) {
     document.getElementById("content-frame").src = page;
 }
 
-// دالة تسجيل الخروج (مثال)
+// دالة تسجيل الخروج
 function logout() {
     alert("تم تسجيل الخروج!");
-    // يمكنك إضافة كود تسجيل خروج Firebase هنا
 }
