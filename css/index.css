@@ -114,11 +114,44 @@ h1 span {
 }
 
 
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
-    background: black;
+/* الشعار في الأعلى */
+header {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo {
+    width: 100px; /* حجم الشعار */
+}
+
+/* الأزرار */
+
+
+
+
+/* النصوص الإضافية */
+.info-section {
+    margin-top: 40px;
+    padding: 20px;
     text-align: center;
 }
+
+.info-box {
+    margin-bottom: 30px;
+}
+
+.info-icon {
+    width: 30px; /* حجم الأيقونات */
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: white;
+    font-size: 22px;
+}
+
+p {
+    color: gray;
+    font-size: 16px;
+}
+
