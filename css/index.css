@@ -34,11 +34,17 @@ body {
     text-decoration: none;
     text-align: center;
     font-size: 18px;
+    border: 2px solid red; /* إطار أحمر */
+    margin: 10px;
+    border-radius: 8px; /* حواف مستديرة */
+    transition: 0.3s;
 }
 
 .sidebar a:hover {
     background: rgba(255, 255, 255, 0.2);
+    border-color: white; /* عند التمرير يصبح الإطار أبيض */
 }
+
 
 .close-btn {
     position: absolute;
