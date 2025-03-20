@@ -58,9 +58,13 @@
                 scriptCard.className = "script-card";
                 scriptCard.innerHTML = `
                     <img src="${script.imageUrl}" alt="صورة السكربت">
-                    <div class="script-title">${script.title}</div>
+                <div class="script-info">
+                        <span>Publish Date: ${script.addedDate}</span>
+                        <span>Map Name: ${script.mapName}</span>
+                    </div>
+                <div class="script-title">${script.title}</div>
                     <p class="script-description">${script.description}</p>
-                    <a href="view.html?id=${doc.id}" class="get-button">تحميل</a>
+                    <a href="view.html?id=${doc.id}" class="get-button">Get</a>
                 `;
                 scriptsContainer.appendChild(scriptCard);
             });
