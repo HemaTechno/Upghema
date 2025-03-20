@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts List</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #121212; /* خلفية سوداء */
+            color: #ff0000; /* النصوص حمراء */
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #1e1e1e;
+            border: 2px solid #ff0000;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ff0000;
+            text-align: center;
+        }
+        th {
+            background-color: #ff0000;
+            color: white;
+        }
+        button {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #a71d2a;
+        }
+        input {
+            width: 90%;
+            padding: 5px;
+            border: 1px solid #ff0000;
+            background: #2a2a2a;
+            color: #ff0000;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <h1>Scripts List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Platform</th>
+                <th>Download Link</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="scriptsTable">
+            <!-- سيتم تعبئة البيانات هنا -->
+        </tbody>
+    </table>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBespCtavesyrdzKcB3LRr4vXd_U6XhfO4",
+            authDomain: "token-9ae6a.firebaseapp.com",
+            projectId: "token-9ae6a",
+            storageBucket: "token-9ae6a.appspot.com",
+            messagingSenderId: "434290198239",
+            appId: "1:434290198239:web:a56983c6f74da146830b6a",
+            measurementId: "G-FMB4BZ07DR"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const tableBody = document.getElementById('scriptsTable');
+
+        function fetchScripts() {
+            tableBody.innerHTML = "";
+            db.collection("scripts").get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td><input type="text" value="${data.title}" id="title-${doc.id}"></td>
+                        <td><input type="text" value="${data.description}" id="desc-${doc.id}"></td>
+                        <td><input type="text" value="${data.platform}" id="platform-${doc.id}"></td>
+                        <td><input type="text" value="${data.downloadLink}" id="link-${doc.id}"></td>
+                        <td>
+                            <button onclick="updateScript('${doc.id}')">Update</button>
+                            <button onclick="deleteScript('${doc.id}')">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }).catch(error => console.error("Error fetching data: ", error));
+        }
+
+        function deleteScript(id) {
+            if (confirm("Are you sure you want to delete this script?")) {
+                db.collection("scripts").doc(id).delete().then(() => {
+                    alert("Script deleted!");
+                    fetchScripts();
+                }).catch(error => console.error("Error deleting script: ", error));
+            }
+        }
+
+        function updateScript(id) {
+            const newTitle = document.getElementById(`title-${id}`).value;
+            const newDesc = document.getElementById(`desc-${id}`).value;
+            const newPlatform = document.getElementById(`platform-${id}`).value;
+            const newLink = document.getElementById(`link-${id}`).value;
+
+            db.collection("scripts").doc(id).update({
+                title: newTitle,
+                description: newDesc,
+                platform: newPlatform,
+                downloadLink: newLink
+            }).then(() => {
+                alert("Script updated!");
+                fetchScripts();
+            }).catch(error => console.error("Error updating script: ", error));
+        }
+
+        window.onload = fetchScripts;
+    </script>
+</body>
+</html>
