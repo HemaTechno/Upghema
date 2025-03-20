@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الهاكات</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <header class="header">
+        <img src="https://i.ibb.co/LnhWf28/image.png" alt="شعار الموقع">
+        <button onclick="toggleLanguage()">تغيير اللغة</button>
+    </header>
+
+    <div class="banner-container">
+        <img src="https://i.ibb.co/wz93wpQ/image.jpg" alt="Banner 1" class="active">
+        <img src="https://i.ibb.co/Q8GR5qL/image.jpg" alt="Banner 2">
+        <img src="https://i.ibb.co/dcpwkMP/image.jpg" alt="Banner 3">
+    </div>
+
+    <h1>All Hack</h1>
+    <div id="scriptsContainer"></div>
+
+    <footer class="footer">
+        <img src="https://i.ibb.co/LnhWf28/image.png" alt="شعار الموقع">
+        <div class="links">
+            <a href="pruivt.html">سياسة الخصوصية</a> |
+            <a href="contents.html">التواصل معنا</a> |
+            <a href="partner.html">الشركاء</a>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
