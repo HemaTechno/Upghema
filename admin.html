@@ -8,13 +8,27 @@
 </head>
 <body>
 
-    <div class="admin-container">
-        <h2>لوحة تحكم الأدمن</h2>
-        <button onclick="logout()">تسجيل الخروج</button>
+    <div class="sidebar">
+        <h2>لوحة التحكم</h2>
+        <ul>
+            <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
+            <li><a href="#" onclick="loadPage('edit-script.html')">تعديل سكربت</a></li>
+            <li><a href="#" onclick="loadPage('settings.html')">إعدادات الموقع</a></li>
+            <li><button onclick="logout()">تسجيل الخروج</button></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
 
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="admin.js"></script>
+    <script>
+        function loadPage(page) {
+            document.getElementById("content-frame").src = page;
+        }
+    </script>
 
 </body>
 </html>
