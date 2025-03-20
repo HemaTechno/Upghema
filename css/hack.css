@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #000;
+    color: #ff0000;
+    padding: 20px;
+    margin: 0;
+    direction: rtl;
+}
+
+/* الهيدر */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #111;
+    border-bottom: 2px solid #ff0000;
+}
+
+.header img {
+    height: 50px;
+}
+
+.header button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.header button:hover {
+    background-color: #cc0000;
+}
+
+/* البنرات */
+.banner-container {
+    position: relative;
+    overflow: hidden;
+    height: 100px;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.banner-container img.active {
+    opacity: 1;
+}
+
+/* العناوين */
+h1 {
+    text-align: center;
+    color: #ff0000;
+    font-size: 2.5rem;
+}
+
+/* مربعات السكربتات */
+.script-box {
+    background: #111;
+    border: 2px solid #ff0000;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.script-box:hover {
+    transform: scale(1.03);
+}
+
+.script-title {
+    font-size: 1.5rem;
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+.script-description {
+    font-size: 1.2rem;
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+.script-platform {
+    margin: 15px 0;
+}
+
+.platform-image {
+    border: 1px solid #ff0000;
+    border-radius: 8px;
+    padding: 3px;
+    width: 60px;
+    height: 60px;
+}
+
+.script-link, .share-button {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: white;
+    background-color: #ff0000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+}
+
+.script-link:hover, .share-button:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+}
+
+/* الفوتر */
+.footer {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #111;
+    color: #ff0000;
+    border-top: 2px solid #ff0000;
+}
+
+.footer .links a {
+    color: #ff0000;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: 0.3s;
+}
+
+.footer .links a:hover {
+    text-decoration: underline;
+}
