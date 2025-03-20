@@ -4,21 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الأدمن</title>
-    <link rel="stylesheet" href="admin.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
 
-    <!-- زر فتح الشريط الجانبي -->
-    <button class="toggle-btn" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
+    <!-- زر فتح القائمة -->
+    <button id="openSidebar" class="menu-btn">☰</button>
 
     <!-- الشريط الجانبي -->
     <div class="sidebar" id="sidebar">
-        <button class="close-btn" onclick="toggleSidebar()">
-            <i class="fas fa-times"></i>
-        </button>
+        <button id="closeSidebar" class="close-btn">&times;</button>
         <h2>لوحة التحكم</h2>
         <ul>
             <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
@@ -29,30 +25,9 @@
     </div>
 
     <!-- المحتوى الرئيسي -->
-    <div class="main-content" id="main-content">
+    <div class="main-content">
         <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
-
-    <script type="module" src="firebase-config.js"></script>
-    <script type="module" src="admin.js"></script>
-    <script>
-        function loadPage(page) {
-            document.getElementById("content-frame").src = page;
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            const mainContent = document.getElementById("main-content");
-            
-            if (sidebar.classList.contains("active")) {
-                sidebar.classList.remove("active");
-                mainContent.classList.remove("shifted");
-            } else {
-                sidebar.classList.add("active");
-                mainContent.classList.add("shifted");
-            }
-        }
-    </script>
 
 </body>
 </html>
