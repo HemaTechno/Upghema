@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الأدمن</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <div class="sidebar">
+    <!-- زر فتح الشريط الجانبي -->
+    <button class="toggle-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- الشريط الجانبي -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">
+            <i class="fas fa-times"></i>
+        </button>
         <h2>لوحة التحكم</h2>
         <ul>
             <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
@@ -18,7 +28,8 @@
         </ul>
     </div>
 
-    <div class="main-content">
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content" id="main-content">
         <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
 
@@ -27,6 +38,19 @@
     <script>
         function loadPage(page) {
             document.getElementById("content-frame").src = page;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("main-content");
+            
+            if (sidebar.classList.contains("active")) {
+                sidebar.classList.remove("active");
+                mainContent.classList.remove("shifted");
+            } else {
+                sidebar.classList.add("active");
+                mainContent.classList.add("shifted");
+            }
         }
     </script>
 
