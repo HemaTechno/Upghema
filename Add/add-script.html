@@ -4,84 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إضافة سكربت جديد</title>
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #121212; /* خلفية سوداء */
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        .form-container {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .form-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(255, 0, 0, 0.25);
-        }
-        .header h1 {
-            font-size: 24px;
-            color: #dc3545; /* تغيير الأزرق إلى الأحمر */
-            margin-bottom: 30px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .form-group label {
-            display: block;
-            font-size: 16px;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            color: #ffffff;
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 6px;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: #dc3545; /* تغيير الأزرق إلى الأحمر */
-            outline: none;
-        }
-        .submit-button {
-            padding: 12px 0;
-            width: 100%;
-            font-size: 18px;
-            color: #fff;
-            background-color: #dc3545; /* تغيير الأزرق إلى الأحمر */
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .submit-button:hover {
-            background-color: #a71d2a;
-            transform: translateY(-2px);
-        }
-        .copy-message {
-            display: none;
-            color: #28a745;
-            font-weight: bold;
-            margin-top: 15px;
-        }
+    <style>body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #121212; /* خلفية سوداء */
+    color: #ff0000; /* النصوص باللون الأحمر */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.form-container {
+    background-color: #1e1e1e;
+    border: 2px solid #ff0000; /* حواف حمراء */
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 20px rgba(255, 0, 0, 0.25);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(255, 0, 0, 0.5);
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #ff0000; /* العنوان باللون الأحمر */
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ff0000;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #ff0000; /* لون النص أحمر */
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #ff0000; /* لون النص في الحقول أحمر */
+    background-color: #2a2a2a;
+    border: 2px solid #ff0000; /* حدود الحقول حمراء */
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #ff0000;
+    outline: none;
+}
+
+.submit-button {
+    padding: 12px 0;
+    width: 100%;
+    font-size: 18px;
+    color: #fff;
+    background-color: #ff0000; /* زر أحمر */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #a71d2a;
+    transform: translateY(-2px);
+}
+
+.copy-message {
+    display: none;
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
     </style>
 </head>
 <body>
