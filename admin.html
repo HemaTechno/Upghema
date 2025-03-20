@@ -5,37 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الأدمن</title>
     <link rel="stylesheet" href="admin.css">
-    <script defer src="script.js"></script>
 </head>
 <body>
 
-    <!-- زر فتح القائمة -->
-    <button id="openSidebar" class="menu-btn">☰</button>
-
-    <!-- الشريط الجانبي -->
     <div class="sidebar" id="sidebar">
-        <button id="closeSidebar" class="close-btn">&times;</button>
+        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <h2>لوحة التحكم</h2>
         <ul>
-            <li><a href="#" onclick="loadPage('dashboard.html')">الرئيسية</a></li>
             <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
             <li><a href="#" onclick="loadPage('edit-script.html')">تعديل سكربت</a></li>
-            <li><a href="#" onclick="loadPage('settings.html')">الإعدادات</a></li>
-            <li><button class="logout-btn" onclick="logout()">تسجيل الخروج</button></li>
+            <li><a href="#" onclick="loadPage('settings.html')">إعدادات الموقع</a></li>
+            <li><button onclick="logout()">تسجيل الخروج</button></li>
         </ul>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <div class="navbar">
-            <input type="text" placeholder="بحث..." class="search-bar">
-            <div class="icons">
-                <span class="bell">🔔</span>
-                <span class="profile">👤</span>
-            </div>
-        </div>
-        <iframe id="content-frame" src="dashboard.html"></iframe>
+        <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+
+        function loadPage(page) {
+            document.getElementById("content-frame").src = page;
+        }
+    </script>
 
 </body>
 </html>
