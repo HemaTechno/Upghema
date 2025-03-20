@@ -47,7 +47,7 @@
     });
 
     function shareLink(id) {
-        const link = `https:// HemaTech.xyz/hack?id=${id}`;
+        const link = `https://HemaTech.xyz/hack?id=${id}`;
         navigator.clipboard.writeText(link).then(() => {
             alert("Done Copy");
         }).catch(err => {
