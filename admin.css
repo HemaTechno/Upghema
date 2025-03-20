@@ -19,6 +19,7 @@ body {
     padding: 20px;
     position: fixed;
     transition: 0.3s;
+    overflow: hidden;
 }
 
 .sidebar h2 {
@@ -58,6 +59,7 @@ body {
     color: black;
 }
 
+/* زر الفتح والإغلاق */
 .toggle-btn {
     position: absolute;
     top: 15px;
@@ -69,32 +71,45 @@ body {
     cursor: pointer;
     font-size: 20px;
     transition: 0.3s;
+    border-radius: 5px;
 }
 
-.sidebar.active {
+/* الشريط الجانبي وهو مغلق */
+.sidebar.closed {
     width: 60px;
+    padding: 20px 5px;
 }
 
-.sidebar.active h2,
-.sidebar.active ul li a,
-.sidebar.active ul li button {
+.sidebar.closed h2,
+.sidebar.closed ul li a,
+.sidebar.closed ul li button {
     display: none;
 }
 
-.sidebar.active .toggle-btn {
+.sidebar.closed .toggle-btn {
     right: 15px;
+}
+
+.sidebar.closed::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-right: 2px solid #ff0000;
+    top: 0;
+    left: 0;
 }
 
 /* المحتوى الرئيسي */
 .main-content {
-    margin-left: 250px;
+    margin-left: 60px;
     flex-grow: 1;
     padding: 20px;
     transition: 0.3s;
 }
 
-.sidebar.active + .main-content {
-    margin-left: 60px;
+.sidebar:not(.closed) + .main-content {
+    margin-left: 250px;
 }
 
 iframe {
