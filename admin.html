@@ -17,16 +17,24 @@
         <button id="closeSidebar" class="close-btn">&times;</button>
         <h2>لوحة التحكم</h2>
         <ul>
+            <li><a href="#" onclick="loadPage('dashboard.html')">الرئيسية</a></li>
             <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
             <li><a href="#" onclick="loadPage('edit-script.html')">تعديل سكربت</a></li>
-            <li><a href="#" onclick="loadPage('settings.html')">إعدادات الموقع</a></li>
-            <li><button onclick="logout()">تسجيل الخروج</button></li>
+            <li><a href="#" onclick="loadPage('settings.html')">الإعدادات</a></li>
+            <li><button class="logout-btn" onclick="logout()">تسجيل الخروج</button></li>
         </ul>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div class="main-content">
-        <iframe id="content-frame" src="add-script.html"></iframe>
+        <div class="navbar">
+            <input type="text" placeholder="بحث..." class="search-bar">
+            <div class="icons">
+                <span class="bell">🔔</span>
+                <span class="profile">👤</span>
+            </div>
+        </div>
+        <iframe id="content-frame" src="dashboard.html"></iframe>
     </div>
 
 </body>
