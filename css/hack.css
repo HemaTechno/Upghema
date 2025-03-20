@@ -133,3 +133,10 @@ h1 {
 h1 span {
     color: red;
 }
+.menu-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
