@@ -7,80 +7,73 @@ body {
     color: white;
 }
 
-/* الشريط الجانبي */
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8); /* تأثير Blur */
-    backdrop-filter: blur(10px);
     position: fixed;
     top: 0;
-    left: 0;
-    transition: 0.3s ease;
-    padding-top: 20px;
-    border-right: 2px solid red;
-}
-
-/* عند الإغلاق */
-.sidebar.closed {
-    width: 60px;
-}
-
-.sidebar.closed h2 {
-    display: none;
-}
-
-.sidebar.closed ul {
-    display: none;
-}
-
-/* زر الفتح والإغلاق */
-.toggle-btn {
-    position: absolute;
-    top: 15px;
-    right: -45px;
-    width: 40px;
-    height: 40px;
-    background-color: red;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); /* تأثير الضبابية */
     transition: 0.3s;
+    padding-top: 60px;
 }
 
-.toggle-btn:hover {
-    background-color: darkred;
-}
-
-/* القائمة */
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-.sidebar ul li {
-    padding: 15px;
-    text-align: center;
-}
-
-.sidebar ul li a, .sidebar ul li button {
+.sidebar a {
     display: block;
     color: white;
+    padding: 15px;
     text-decoration: none;
-    padding: 10px;
-    border: 2px solid red;
-    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    border: 2px solid red; /* إطار أحمر */
+    margin: 10px;
+    border-radius: 8px; /* حواف مستديرة */
     transition: 0.3s;
-    background: none;
-    width: 80%;
-    margin: auto;
-    font-size: 16px;
 }
 
-.sidebar ul li a:hover, .sidebar ul li button:hover {
-    background-color: red;
+.sidebar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white; /* عند التمرير يصبح الإطار أبيض */
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.content {
+    margin-top: 100px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h1 span {
+    color: red;
 }
 
 /* المحتوى الرئيسي */
