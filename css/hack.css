@@ -48,17 +48,18 @@ h1 {
 
 .script-link, .share-button {
     display: block;
-    margin-top: 10px;
+    margin: 15px auto; /* جعل الزر في المنتصف */
+    width: 50%; /* تحديد عرض مناسب */
+    text-align: center;
     text-decoration: none;
     color: black;
     background-color: red;
-    padding: 10px 20px;
+    padding: 12px 0;
     border-radius: 5px;
     font-size: 1rem;
-    text-align: center;
+    font-weight: bold;
     transition: background-color 0.3s, transform 0.3s;
-}
-
+   } 
 .script-link:hover, .share-button:hover {
     background-color: darkred;
     transform: translateY(-2px);
