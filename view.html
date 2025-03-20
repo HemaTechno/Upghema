@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل السكربت</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- الشريط العلوي -->
+    <header class="header">
+        <img src="https://i.ibb.co/LnhWf28/image.png" alt="شعار الموقع">
+        <button onclick="toggleLanguage()">تغيير اللغة</button>
+    </header>
+
+    <!-- البنرات -->
+    <div class="banner-container">
+        <img src="https://i.ibb.co/wz93wpQ/image.jpg" alt="Banner 1" class="active">
+        <img src="https://i.ibb.co/Q8GR5qL/image.jpg" alt="Banner 2">
+        <img src="https://i.ibb.co/dcpwkMP/image.jpg" alt="Banner 3">
+    </div>
+
+    <!-- قسم تفاصيل السكربت -->
+    <div class="script-container">
+        <h2 id="scriptTitle" class="script-title"></h2>
+        <img id="scriptImage" class="script-image" src="" alt="">
+        <p id="scriptDescription" class="script-description"></p>
+        
+        <div id="codeEditor" class="code-editor">
+            <!-- سيتم تحميل كود السكربت هنا -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="download-button" onclick="downloadScript()">
+                <img src="https://i.ibb.co/CnGk9R4/image.png" alt="تحميل" style="width: 30px; height: 30px;">
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
