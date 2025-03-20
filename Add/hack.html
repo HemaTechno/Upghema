@@ -13,35 +13,35 @@
         }
         h1 {
             text-align: center;
-            color: #ff0000; /* عنوان باللون الأحمر */
+            color: #ff0000;
         }
         form {
             max-width: 500px;
             margin: auto;
             padding: 20px;
-            background: #111; /* لون المربع أسود داكن */
+            background: #111;
             border-radius: 10px;
-            border: 2px solid #ff0000; /* حواف حمراء */
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* ظل أحمر خفيف */
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
         label {
             margin-bottom: 10px;
             display: block;
             font-weight: bold;
-            color: #ff0000; /* لون النص أحمر */
+            color: #ff0000;
         }
         input[type="text"], input[type="url"], select {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 2px solid #ff0000; /* حدود الحقول حمراء */
+            border: 2px solid #ff0000;
             border-radius: 5px;
             font-size: 16px;
-            background-color: #222; /* لون خلفية الحقول داكن */
-            color: #ff0000; /* لون النص في الحقول أحمر */
+            background-color: #222;
+            color: #ff0000;
         }
         input[type="submit"] {
-            background-color: #ff0000; /* زر أحمر */
+            background-color: #ff0000;
             color: white;
             padding: 10px;
             border: none;
@@ -51,10 +51,10 @@
             transition: background-color 0.3s;
         }
         input[type="submit"]:hover {
-            background-color: #cc0000; /* لون أغمق عند التمرير */
+            background-color: #cc0000;
         }
         .link-input {
-            display: none; /* إخفاء حقل الرابط افتراضيًا */
+            display: none;
         }
     </style>
     <!-- Firebase Links -->
@@ -109,15 +109,33 @@
             const linkInputContainer = document.getElementById('linkInputContainer');
 
             if (selectedPlatform) {
-                linkInputContainer.style.display = 'block'; // Show link input
+                linkInputContainer.style.display = 'block';
             } else {
-                linkInputContainer.style.display = 'none'; // Hide link input
+                linkInputContainer.style.display = 'none';
             }
         });
 
-        // Add event when submitting the form
+        // Discord Webhook URL
+        const discordWebhookURL = "https://discord.com/api/webhooks/1352331391064608778/SKMG4zU4PJKrdO1tjK52JrGgXx5nLD-NkEiVuL1oYkK9_c_U-7vKLEqX3DH8Ojb60eep";
+
+        // Function to send message to Discord
+        function sendToDiscord(title, description, platform, downloadLink) {
+            const payload = {
+                content: `📢 **New Hack Added!**\n\n📌 **Title:** ${title}\n📝 **Description:** ${description}\n🖥 **Platform:** ${platform}\n🔗 **Download Link:** ${downloadLink}`
+            };
+
+            fetch(discordWebhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }).catch(error => console.error("Error sending message to Discord: ", error));
+        }
+
+        // Form submission event
         document.getElementById('scriptForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent page reload
+            e.preventDefault();
 
             // Get values from the form
             const title = document.getElementById('title').value;
@@ -131,11 +149,12 @@
                 description: description,
                 platform: platform,
                 downloadLink: downloadLink,
-                id: Date.now() // Use timestamp as id
+                id: Date.now()
             }).then(() => {
                 alert('Script added successfully!');
-                document.getElementById('scriptForm').reset(); // Reset the form
-                document.getElementById('linkInputContainer').style.display = 'none'; // Hide link input again
+                sendToDiscord(title, description, platform, downloadLink);
+                document.getElementById('scriptForm').reset();
+                document.getElementById('linkInputContainer').style.display = 'none';
             }).catch((error) => {
                 console.error("Error adding script: ", error);
             });
