@@ -38,20 +38,20 @@
             scriptBox.innerHTML = `
                 <div class="script-title">${scriptData.title}</div>
                 <div class="script-description">${scriptData.description}</div>
-                <div class="script-platform">🖥 <b>نظام التشغيل:</b> ${scriptData.platform}</div>
-                <a href="${scriptData.downloadLink}" class="script-link" target="_blank">🔗 تحميل الهاك</a>
-                <button class="share-button" onclick="shareLink('${doc.id}')">📤 مشاركة</button>
+                <div class="script-platform">🖥 <b>operating system:</b> ${scriptData.platform}</div>
+                <a href="${scriptData.downloadLink}" class="script-link" target="_blank">🔗 Download</a>
+                <button class="share-button" onclick="shareLink('${doc.id}')">📤 Sharw</button>
             `;
             scriptsContainer.appendChild(scriptBox);
         });
     });
 
     function shareLink(id) {
-        const link = `https://h-scripts.site/hack?id=${id}`;
+        const link = `https:// HemaTech.xyz/hack?id=${id}`;
         navigator.clipboard.writeText(link).then(() => {
-            alert("تم نسخ الرابط للمشاركة!");
+            alert("Done Copy");
         }).catch(err => {
-            console.error('خطأ في النسخ: ', err);
+            console.error('Error 709', err);
         });
     }
 </script>
