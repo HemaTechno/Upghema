@@ -39,3 +39,17 @@ function loadPage(page) {
 function logout() {
     alert("تم تسجيل الخروج!");
 }
+
+    function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("closed");
+
+        // تعديل الـ margin للمحتوى عند فتح الشريط أو إغلاقه
+        var mainContent = document.querySelector(".main-content");
+        if (sidebar.classList.contains("closed")) {
+            mainContent.style.marginLeft = "60px";
+        } else {
+            mainContent.style.marginLeft = "250px";
+        }
+    }
+
