@@ -3,26 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+    <title>لوحة تحكم الأدمن</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-<!-- ✅ الشريط الجانبي -->
-<div class="sidebar">
-    <h2>لوحة التحكم</h2>
-    <ul>
-        <li onclick="loadPage('add-script.html')"><i class="fas fa-plus-circle"></i> إضافة سكربت</li>
-        <li onclick="loadPage('edit-script.html')"><i class="fas fa-edit"></i> تعديل سكربت</li>
-        <li onclick="loadPage('users.html')"><i class="fas fa-users"></i> إدارة المستخدمين</li>
-        <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</li>
-    </ul>
-</div>
+    <div class="sidebar">
+        <h2>لوحة التحكم</h2>
+        <ul>
+            <li><a href="#" onclick="loadPage('add-script.html')">إضافة سكربت</a></li>
+            <li><a href="#" onclick="loadPage('edit-script.html')">تعديل سكربت</a></li>
+            <li><a href="#" onclick="loadPage('settings.html')">إعدادات الموقع</a></li>
+            <li><button onclick="logout()">تسجيل الخروج</button></li>
+        </ul>
+    </div>
 
-<!-- ✅ المحتوى الرئيسي -->
-<div class="content">
-    <iframe id="contentFrame" src="add-script.html"></iframe>
-</div>
+    <div class="main-content">
+        <iframe id="content-frame" src="add-script.html"></iframe>
+    </div>
 
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="admin.js"></script>
