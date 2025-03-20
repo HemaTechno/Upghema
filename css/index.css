@@ -21,7 +21,8 @@ body {
     left: -250px;
     width: 250px;
     height: 100%;
-    background: #111;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); /* تأثير الضبابية */
     transition: 0.3s;
     padding-top: 60px;
 }
@@ -32,10 +33,11 @@ body {
     padding: 15px;
     text-decoration: none;
     text-align: center;
+    font-size: 18px;
 }
 
 .sidebar a:hover {
-    background: #444;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .close-btn {
@@ -47,6 +49,21 @@ body {
     color: white;
     font-size: 25px;
     cursor: pointer;
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .content {
