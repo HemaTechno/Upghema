@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar closed" id="sidebar">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <h2>لوحة التحكم</h2>
         <ul>
@@ -19,13 +19,22 @@
         </ul>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" id="main-content">
         <iframe id="content-frame" src="add-script.html"></iframe>
     </div>
 
     <script>
         function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("active");
+            var sidebar = document.getElementById("sidebar");
+            var mainContent = document.getElementById("main-content");
+
+            sidebar.classList.toggle("closed");
+
+            if (sidebar.classList.contains("closed")) {
+                mainContent.style.marginLeft = "60px"; 
+            } else {
+                mainContent.style.marginLeft = "250px"; 
+            }
         }
 
         function loadPage(page) {
