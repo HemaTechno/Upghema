@@ -23,12 +23,15 @@
     <!-- تأثير الاحتفال -->
     <canvas id="confettiCanvas"></canvas>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <!-- Firebase SDK --><script>
+    window.onload = function () {
+        // تأكد أن Firebase محملة
+        if (typeof firebase === "undefined") {
+            console.error("Firebase لم يتم تحميلها بشكل صحيح.");
+            return;
+        }
 
-    <script>
-        // Firebase Configuration
+        // تكوين Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
             authDomain: "treng-c6027.firebaseapp.com",
@@ -39,46 +42,26 @@
             measurementId: "G-3JFKFT2LT0"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // تهيئة Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // تهيئة Firestore
         const db = firebase.firestore();
 
-        // Function to register user
-        function registerUser() {
-            const robloxName = document.getElementById("robloxName").value.trim();
-            const whatsappNumber = document.getElementById("whatsappNumber").value.trim();
-
-            if (robloxName && whatsappNumber) {
-                db.collection("wheel_users").add({
-                    robloxName: robloxName,
-                    whatsappNumber: whatsappNumber,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    // تشغيل تأثير الاحتفال
-                    startConfetti();
-
-                    // مسح الحقول بعد التسجيل
-                    document.getElementById("robloxName").value = "";
-                    document.getElementById("whatsappNumber").value = "";
-
-                    // تحديث عدد المسجلين
-                    updateUserCount();
-                }).catch(error => {
-                    console.error("Error adding document: ", error);
-                });
-            } else {
-                alert("يرجى إدخال جميع البيانات");
-            }
-        }
-
-        // Function to update user count
-        function updateUserCount() {
-            db.collection("wheel_users").get().then(snapshot => {
-                document.getElementById("userCount").innerText = snapshot.size;
-            });
-        }
-
-        // Load user count on page load
+        // تحديث عدد المستخدمين عند تحميل الصفحة
         updateUserCount();
+    };
+
+    // تحديث عدد المستخدمين
+    function updateUserCount() {
+        db.collection("wheel_users").get().then(snapshot => {
+            document.getElementById("userCount").innerText = snapshot.size;
+        });
+    }
+</script>
+
 
         // وظيفة تشغيل قصاصات الورق
         function startConfetti() {
