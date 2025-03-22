@@ -40,10 +40,12 @@
         };
 
         // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
+        // تحقق مما إذا كانت Firebase محملة قبل استخدامها
+if (typeof firebase !== "undefined" && firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const db = firebase.firestore();
 
         // Function to register user
         function registerUser() {
