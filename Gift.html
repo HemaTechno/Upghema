@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل في عجلة الحظ</title>
+    <link rel="stylesheet" href="/css/gift.css"> <!-- ربط ملف الـ CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>تسجيل في عجلة الحظ</h1>
+        <p class="count">عدد المسجلين: <span id="userCount">0</span></p>
+        
+        <input type="text" id="robloxName" placeholder="اسم Roblox" required>
+        <input type="tel" id="whatsappNumber" placeholder="رقم WhatsApp" required>
+        <button onclick="registerUser()">تسجيل</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Function to register user
+        function registerUser() {
+            const robloxName = document.getElementById("robloxName").value;
+            const whatsappNumber = document.getElementById("whatsappNumber").value;
+
+            if (robloxName && whatsappNumber) {
+                db.collection("wheel_users").add({
+                    robloxName: robloxName,
+                    whatsappNumber: whatsappNumber,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert("تم التسجيل بنجاح!");
+                    document.getElementById("robloxName").value = "";
+                    document.getElementById("whatsappNumber").value = "";
+                    updateUserCount();
+                }).catch(error => {
+                    console.error("Error adding document: ", error);
+                });
+            } else {
+                alert("يرجى إدخال جميع البيانات");
+            }
+        }
+
+        // Function to update user count
+        function updateUserCount() {
+            db.collection("wheel_users").get().then(snapshot => {
+                document.getElementById("userCount").innerText = snapshot.size;
+            });
+        }
+
+        // Load user count on page load
+        updateUserCount();
+    </script>
+</body>
+</html>
