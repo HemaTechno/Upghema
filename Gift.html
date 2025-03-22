@@ -4,70 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل في عجلة الحظ</title>
-    <link rel="stylesheet" href="/css/gift.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #000; /* خلفية سوداء */
+            color: #ff0000; /* لون النص أحمر */
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #ff0000;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #111;
+            border-radius: 10px;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ff0000;
+        }
+        input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #ff0000;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #222;
+            color: #ff0000;
+        }
+        input[type="submit"] {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #cc0000;
+        }
+    </style>
+    <!-- Firebase Links -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>تسجيل في عجلة الحظ</h1>
-        <p class="count">عدد المسجلين: <span id="userCount">0</span></p>
-        
-        <input type="text" id="robloxName" placeholder="اسم Roblox" required>
-        <input type="tel" id="whatsappNumber" placeholder="رقم WhatsApp" required>
-        <button onclick="registerUser()">تسجيل</button>
-    </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <h1>تسجيل في عجلة الحظ</h1>
+    <form id="registerForm">
+        <label for="robloxName">اسم Roblox:</label>
+        <input type="text" id="robloxName" required>
+
+        <label for="whatsappNumber">رقم WhatsApp:</label>
+        <input type="tel" id="whatsappNumber" required>
+
+        <input type="submit" value="تسجيل">
+    </form>
 
     <script>
-        // تكوين Firebase
+        // إعداد Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
-            authDomain: "treng-c6027.firebaseapp.com",
-            projectId: "treng-c6027",
-            storageBucket: "treng-c6027.appspot.com",
-            messagingSenderId: "305527546716",
-            appId: "1:305527546716:web:fd072a58200f31bb42d799",
-            measurementId: "G-3JFKFT2LT0"
+            apiKey: "AIzaSyBespCtavesyrdzKcB3LRr4vXd_U6XhfO4",
+            authDomain: "token-9ae6a.firebaseapp.com",
+            projectId: "token-9ae6a",
+            storageBucket: "token-9ae6a.appspot.com",
+            messagingSenderId: "434290198239",
+            appId: "1:434290198239:web:a56983c6f74da146830b6a",
+            measurementId: "G-FMB4BZ07DR"
         };
 
         // تهيئة Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // دالة تسجيل المستخدم
-        function registerUser() {
-            const robloxName = document.getElementById("robloxName").value;
-            const whatsappNumber = document.getElementById("whatsappNumber").value;
+        // عند إرسال النموذج
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // جمع البيانات
+            const robloxName = document.getElementById('robloxName').value;
+            const whatsappNumber = document.getElementById('whatsappNumber').value;
 
             if (robloxName && whatsappNumber) {
-                db.collection("wheel_users").add({
+                // حفظ البيانات في Firestore
+                db.collection("users_wheel").add({
                     robloxName: robloxName,
                     whatsappNumber: whatsappNumber,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
                     alert("تم التسجيل بنجاح!");
-                    document.getElementById("robloxName").value = "";
-                    document.getElementById("whatsappNumber").value = "";
-                    updateUserCount();
-                }).catch(error => {
-                    console.error("Error adding document: ", error);
+                    document.getElementById('registerForm').reset();
+                }).catch((error) => {
+                    console.error("خطأ في التسجيل: ", error);
                 });
             } else {
                 alert("يرجى إدخال جميع البيانات");
             }
-        }
-
-        // تحديث عدد المستخدمين
-        function updateUserCount() {
-            db.collection("wheel_users").get().then(snapshot => {
-                document.getElementById("userCount").innerText = snapshot.size;
-            });
-        }
-
-        // تحديث العدد عند تحميل الصفحة
-        updateUserCount();
+        });
     </script>
 </body>
 </html>
