@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    border: 3px solid red;
+    padding: 20px;
+    width: 300px;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+input, button {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input {
+    border: 1px solid red;
+    background-color: black;
+    color: white;
+}
+
+button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkred;
+}
