@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل في عجلة الحظ</title>
-    <link rel="stylesheet" href="/css/gift.css"> <!-- ربط ملف الـ CSS -->
+    <link rel="stylesheet" href="/css/gift.css">
 </head>
 <body>
     <div class="container">
@@ -20,17 +16,11 @@
         <button onclick="registerUser()">تسجيل</button>
     </div>
 
-    <!-- تأثير الاحتفال -->
-    <canvas id="confettiCanvas"></canvas>
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
-    <!-- Firebase SDK --><script>
-    window.onload = function () {
-        // تأكد أن Firebase محملة
-        if (typeof firebase === "undefined") {
-            console.error("Firebase لم يتم تحميلها بشكل صحيح.");
-            return;
-        }
-
+    <script>
         // تكوين Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
@@ -43,76 +33,41 @@
         };
 
         // تهيئة Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-        // تهيئة Firestore
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // تحديث عدد المستخدمين عند تحميل الصفحة
-        updateUserCount();
-    };
+        // دالة تسجيل المستخدم
+        function registerUser() {
+            const robloxName = document.getElementById("robloxName").value;
+            const whatsappNumber = document.getElementById("whatsappNumber").value;
 
-    // تحديث عدد المستخدمين
-    function updateUserCount() {
-        db.collection("wheel_users").get().then(snapshot => {
-            document.getElementById("userCount").innerText = snapshot.size;
-        });
-    }
-
-
-
-        // وظيفة تشغيل قصاصات الورق
-        function startConfetti() {
-            const confettiCanvas = document.getElementById("confettiCanvas");
-            const ctx = confettiCanvas.getContext("2d");
-            confettiCanvas.width = window.innerWidth;
-            confettiCanvas.height = window.innerHeight;
-
-            let confetti = [];
-            for (let i = 0; i < 100; i++) {
-                confetti.push({
-                    x: Math.random() * confettiCanvas.width,
-                    y: Math.random() * confettiCanvas.height,
-                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    size: Math.random() * 5 + 2,
-                    speedX: Math.random() * 3 - 1.5,
-                    speedY: Math.random() * 3 + 1
+            if (robloxName && whatsappNumber) {
+                db.collection("wheel_users").add({
+                    robloxName: robloxName,
+                    whatsappNumber: whatsappNumber,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert("تم التسجيل بنجاح!");
+                    document.getElementById("robloxName").value = "";
+                    document.getElementById("whatsappNumber").value = "";
+                    updateUserCount();
+                }).catch(error => {
+                    console.error("Error adding document: ", error);
                 });
+            } else {
+                alert("يرجى إدخال جميع البيانات");
             }
-
-            function drawConfetti() {
-                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-                confetti.forEach((c, i) => {
-                    ctx.fillStyle = c.color;
-                    ctx.beginPath();
-                    ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    c.x += c.speedX;
-                    c.y += c.speedY;
-
-                    if (c.y > confettiCanvas.height) {
-                        confetti[i] = {
-                            x: Math.random() * confettiCanvas.width,
-                            y: -10,
-                            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                            size: Math.random() * 5 + 2,
-                            speedX: Math.random() * 3 - 1.5,
-                            speedY: Math.random() * 3 + 1
-                        };
-                    }
-                });
-
-                requestAnimationFrame(drawConfetti);
-            }
-
-            drawConfetti();
-            setTimeout(() => {
-                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            }, 3000); // مدة التأثير 3 ثوانٍ
         }
+
+        // تحديث عدد المستخدمين
+        function updateUserCount() {
+            db.collection("wheel_users").get().then(snapshot => {
+                document.getElementById("userCount").innerText = snapshot.size;
+            });
+        }
+
+        // تحديث العدد عند تحميل الصفحة
+        updateUserCount();
     </script>
 </body>
 </html>
