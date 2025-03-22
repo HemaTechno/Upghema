@@ -16,13 +16,16 @@
         <button onclick="registerUser()">تسجيل</button>
     </div>
 
+    <!-- تأثير الاحتفال -->
+    <canvas id="confettiCanvas"></canvas>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
     <script>
         // Firebase Configuration
-      const firebaseConfig = {
+        const firebaseConfig = {
             apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
             authDomain: "treng-c6027.firebaseapp.com",
             projectId: "treng-c6027",
@@ -33,13 +36,15 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
 
         // Function to register user
         function registerUser() {
-            const robloxName = document.getElementById("robloxName").value;
-            const whatsappNumber = document.getElementById("whatsappNumber").value;
+            const robloxName = document.getElementById("robloxName").value.trim();
+            const whatsappNumber = document.getElementById("whatsappNumber").value.trim();
 
             if (robloxName && whatsappNumber) {
                 db.collection("wheel_users").add({
@@ -47,9 +52,14 @@
                     whatsappNumber: whatsappNumber,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
-                    alert("تم التسجيل بنجاح!");
+                    // تشغيل تأثير الاحتفال
+                    startConfetti();
+
+                    // مسح الحقول بعد التسجيل
                     document.getElementById("robloxName").value = "";
                     document.getElementById("whatsappNumber").value = "";
+
+                    // تحديث عدد المسجلين
                     updateUserCount();
                 }).catch(error => {
                     console.error("Error adding document: ", error);
@@ -68,6 +78,57 @@
 
         // Load user count on page load
         updateUserCount();
+
+        // وظيفة تشغيل قصاصات الورق
+        function startConfetti() {
+            const confettiCanvas = document.getElementById("confettiCanvas");
+            const ctx = confettiCanvas.getContext("2d");
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+
+            let confetti = [];
+            for (let i = 0; i < 100; i++) {
+                confetti.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    size: Math.random() * 5 + 2,
+                    speedX: Math.random() * 3 - 1.5,
+                    speedY: Math.random() * 3 + 1
+                });
+            }
+
+            function drawConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confetti.forEach((c, i) => {
+                    ctx.fillStyle = c.color;
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    c.x += c.speedX;
+                    c.y += c.speedY;
+
+                    if (c.y > confettiCanvas.height) {
+                        confetti[i] = {
+                            x: Math.random() * confettiCanvas.width,
+                            y: -10,
+                            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                            size: Math.random() * 5 + 2,
+                            speedX: Math.random() * 3 - 1.5,
+                            speedY: Math.random() * 3 + 1
+                        };
+                    }
+                });
+
+                requestAnimationFrame(drawConfetti);
+            }
+
+            drawConfetti();
+            setTimeout(() => {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            }, 3000); // مدة التأثير 3 ثوانٍ
+        }
     </script>
 </body>
 </html>
