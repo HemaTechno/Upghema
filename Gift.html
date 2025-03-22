@@ -39,13 +39,8 @@
             measurementId: "G-3JFKFT2LT0"
         };
 
-        // Initialize Firebase
-        // تحقق مما إذا كانت Firebase محملة قبل استخدامها
-if (typeof firebase !== "undefined" && firebase.apps.length === 0) {
-    firebase.initializeApp(firebaseConfig);
-}
-
-const db = firebase.firestore();
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // Function to register user
         function registerUser() {
