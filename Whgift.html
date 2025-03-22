@@ -3,42 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عجلة الحظ</title>
+    <title>عجلة الحظ الفخمة</title>
     <style>
         body {
             font-family: 'Cairo', sans-serif;
             text-align: center;
             background-color: #000;
             color: #ff0000;
+            overflow: hidden;
         }
         h1 {
             margin-top: 20px;
-            font-size: 24px;
+            font-size: 28px;
+            text-shadow: 0 0 10px red;
         }
         .wheel-container {
             position: relative;
             margin: 50px auto;
-            width: 300px;
-            height: 300px;
-        }
-        .wheel {
-            width: 100%;
-            height: 100%;
+            width: 350px;
+            height: 350px;
             border-radius: 50%;
-            border: 5px solid #ff0000;
             background: conic-gradient(#ff0000 0% 25%, #000 25% 50%, #ff0000 50% 75%, #000 75% 100%);
-            transition: transform 3s ease-out;
+            border: 5px solid #ff0000;
+            box-shadow: 0 0 20px red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .pointer {
+        .name-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 0 0 10px yellow;
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 25px solid white;
         }
         button {
             padding: 10px 20px;
@@ -49,6 +46,8 @@
             cursor: pointer;
             margin-top: 20px;
             border-radius: 5px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px red;
         }
         button:hover {
             background-color: #cc0000;
@@ -59,6 +58,7 @@
             display: none;
             color: yellow;
             font-weight: bold;
+            text-shadow: 0 0 15px yellow;
         }
         .confetti {
             position: fixed;
@@ -76,10 +76,9 @@
 </head>
 <body>
 
-    <h1>🎡 عجلة الحظ 🎡</h1>
+    <h1>🎡 عجلة الحظ الفخمة 🎡</h1>
     <div class="wheel-container">
-        <div class="pointer"></div>
-        <div class="wheel" id="wheel"></div>
+        <div class="name-display" id="nameDisplay">👀 انتظر...</div>
     </div>
     <button onclick="spinWheel()">لف العجلة</button>
     <h2 class="winner-message" id="winnerMessage">🎉 ألف مبروك! 🎉</h2>
@@ -122,24 +121,30 @@
                 return;
             }
 
-            const wheel = document.getElementById("wheel");
+            const nameDisplay = document.getElementById("nameDisplay");
             const winnerMessage = document.getElementById("winnerMessage");
 
-            // اختيار فائز عشوائي
-            const winnerIndex = Math.floor(Math.random() * participants.length);
-            const winnerName = participants[winnerIndex];
+            let spinTime = 3000; // مدة الدوران 3 ثوانٍ
+            let interval = 50; // سرعة تغيير الأسماء
+            let elapsedTime = 0;
 
-            // تدوير العجلة عشوائيًا
-            const rotations = Math.floor(Math.random() * 10) + 5;
-            const finalAngle = rotations * 360 + Math.floor(Math.random() * 360);
+            // تغيير الأسماء أثناء الدوران
+            let spinning = setInterval(() => {
+                let randomIndex = Math.floor(Math.random() * participants.length);
+                nameDisplay.innerText = participants[randomIndex];
+                elapsedTime += interval;
 
-            wheel.style.transform = `rotate(${finalAngle}deg)`;
-
-            setTimeout(() => {
-                winnerMessage.innerHTML = `🎉 ألف مبروك! الفائز: ${winnerName} 🎉`;
-                winnerMessage.style.display = "block";
-                createConfetti(); // تأثير الاحتفال
-            }, 3000);
+                if (elapsedTime >= spinTime) {
+                    clearInterval(spinning);
+                    let winnerIndex = Math.floor(Math.random() * participants.length);
+                    let winnerName = participants[winnerIndex];
+                    
+                    nameDisplay.innerText = `🏆 ${winnerName} 🏆`;
+                    winnerMessage.innerHTML = `🎉 ألف مبروك! الفائز: ${winnerName} 🎉`;
+                    winnerMessage.style.display = "block";
+                    createConfetti();
+                }
+            }, interval);
         }
 
         // تأثير القصاصات الورقية
