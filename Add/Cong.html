@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المسجلين</title>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #000;
+            color: #ff0000;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #ff0000;
+            text-shadow: 0 0 10px red;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #111;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 10px red;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ff0000;
+            text-align: center;
+            color: white;
+        }
+        th {
+            background: #ff0000;
+            color: white;
+        }
+        button {
+            background-color: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #cc0000;
+        }
+        .delete-all {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px 20px;
+        }
+    </style>
+    <!-- Firebase Links -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <h1>📜 قائمة المسجلين في عجلة الحظ 📜</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم Roblox</th>
+                <th>إجراء</th>
+            </tr>
+        </thead>
+        <tbody id="usersTable"></tbody>
+    </table>
+
+    <button class="delete-all" onclick="deleteAllUsers()">❌ مسح جميع المسجلين</button>
+
+    <script>
+        // إعداد Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBespCtavesyrdzKcB3LRr4vXd_U6XhfO4",
+            authDomain: "token-9ae6a.firebaseapp.com",
+            projectId: "token-9ae6a",
+            storageBucket: "token-9ae6a.appspot.com",
+            messagingSenderId: "434290198239",
+            appId: "1:434290198239:web:a56983c6f74da146830b6a",
+            measurementId: "G-FMB4BZ07DR"
+        };
+
+        // تهيئة Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const usersTable = document.getElementById("usersTable");
+
+        // جلب المسجلين وعرضهم
+        function loadUsers() {
+            usersTable.innerHTML = ""; // مسح الجدول أولًا
+            db.collection("users_wheel").orderBy("timestamp", "desc").get().then((querySnapshot) => {
+                let index = 1;
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index++}</td>
+                        <td>${data.robloxName}</td>
+                        <td><button onclick="deleteUser('${doc.id}')">❌ حذف</button></td>
+                    `;
+                    usersTable.appendChild(row);
+                });
+            }).catch((error) => {
+                console.error("خطأ في تحميل المسجلين:", error);
+            });
+        }
+
+        loadUsers(); // تحميل البيانات عند فتح الصفحة
+
+        // حذف مستخدم معين
+        function deleteUser(userId) {
+            if (confirm("هل أنت متأكد أنك تريد حذف هذا المستخدم؟")) {
+                db.collection("users_wheel").doc(userId).delete().then(() => {
+                    alert("✅ تم حذف المستخدم بنجاح!");
+                    loadUsers(); // تحديث القائمة بعد الحذف
+                }).catch((error) => {
+                    console.error("خطأ في حذف المستخدم:", error);
+                });
+            }
+        }
+
+        // حذف جميع المستخدمين
+        function deleteAllUsers() {
+            if (confirm("⚠️ هل تريد حذف جميع المسجلين؟ هذا الإجراء لا يمكن التراجع عنه!")) {
+                db.collection("users_wheel").get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        doc.ref.delete();
+                    });
+                    alert("✅ تم مسح جميع المسجلين بنجاح!");
+                    loadUsers();
+                }).catch((error) => {
+                    console.error("خطأ في مسح الجميع:", error);
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
