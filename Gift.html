@@ -10,10 +10,18 @@
             background-color: #000; /* خلفية سوداء */
             color: #ff0000; /* لون النص أحمر */
             padding: 20px;
+            text-align: center;
         }
         h1 {
-            text-align: center;
             color: #ff0000;
+            text-shadow: 0 0 10px red;
+        }
+        .counter {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: yellow;
+            text-shadow: 0 0 10px yellow;
         }
         form {
             max-width: 400px;
@@ -30,7 +38,7 @@
             margin-bottom: 5px;
             color: #ff0000;
         }
-        input[type="text"], input[type="tel"] {
+        input[type="text"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -49,9 +57,27 @@
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            box-shadow: 0 0 10px red;
         }
         input[type="submit"]:hover {
             background-color: #cc0000;
+        }
+        .success-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+            color: yellow;
+            text-shadow: 0 0 15px yellow;
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            opacity: 0.8;
+            position: absolute;
+            border-radius: 50%;
         }
     </style>
     <!-- Firebase Links -->
@@ -60,16 +86,16 @@
 </head>
 <body>
 
-    <h1>تسجيل في عجلة الحظ</h1>
+    <h1>🎡 تسجيل في عجلة الحظ 🎡</h1>
+    <div class="counter">📌 عدد المسجلين: <span id="userCount">0</span></div>
+
     <form id="registerForm">
         <label for="robloxName">اسم Roblox:</label>
         <input type="text" id="robloxName" required>
-
-        <label for="whatsappNumber">رقم WhatsApp:</label>
-        <input type="tel" id="whatsappNumber" required>
-
         <input type="submit" value="تسجيل">
     </form>
+
+    <h2 class="success-message" id="successMessage">🎉 تم التسجيل بنجاح! 🎉</h2>
 
     <script>
         // إعداد Firebase
@@ -87,30 +113,92 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // جلب عنوان IP الخاص بالمستخدم
+        async function getUserIP() {
+            const response = await fetch("https://api64.ipify.org?format=json");
+            const data = await response.json();
+            return data.ip;
+        }
+
+        // تحديث عدد المسجلين
+        function updateUserCount() {
+            db.collection("users_wheel").get().then((querySnapshot) => {
+                document.getElementById("userCount").innerText = querySnapshot.size;
+            }).catch((error) => {
+                console.error("خطأ في جلب عدد المسجلين:", error);
+            });
+        }
+        updateUserCount(); // استدعاء التحديث عند فتح الصفحة
+
         // عند إرسال النموذج
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // جمع البيانات
             const robloxName = document.getElementById('robloxName').value;
-            const whatsappNumber = document.getElementById('whatsappNumber').value;
 
-            if (robloxName && whatsappNumber) {
-                // حفظ البيانات في Firestore
-                db.collection("users_wheel").add({
-                    robloxName: robloxName,
-                    whatsappNumber: whatsappNumber,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    alert("تم التسجيل بنجاح!");
-                    document.getElementById('registerForm').reset();
-                }).catch((error) => {
-                    console.error("خطأ في التسجيل: ", error);
-                });
-            } else {
-                alert("يرجى إدخال جميع البيانات");
+            if (!robloxName) {
+                alert("يرجى إدخال اسم Roblox");
+                return;
             }
+
+            // الحصول على IP المستخدم
+            const userIP = await getUserIP();
+
+            // التحقق مما إذا كان هذا المستخدم قد سجل من قبل
+            db.collection("users_wheel").where("userIP", "==", userIP).get().then((querySnapshot) => {
+                if (!querySnapshot.empty) {
+                    alert("❌ لقد قمت بالتسجيل بالفعل!");
+                } else {
+                    // حفظ البيانات في Firestore
+                    db.collection("users_wheel").add({
+                        robloxName: robloxName,
+                        userIP: userIP,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        document.getElementById('registerForm').reset();
+                        document.getElementById('successMessage').style.display = "block";
+                        createConfetti();
+                        updateUserCount();
+                    }).catch((error) => {
+                        console.error("خطأ في التسجيل: ", error);
+                    });
+                }
+            }).catch((error) => {
+                console.error("خطأ في التحقق من المستخدم:", error);
+            });
         });
+
+        // تأثير القصاصات الورقية
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                let confetti = document.createElement("div");
+                confetti.className = "confetti";
+                document.body.appendChild(confetti);
+
+                confetti.style.left = Math.random() * window.innerWidth + "px";
+                confetti.style.top = "-10px";
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000);
+            }
+        }
+
+        // ألوان عشوائية للقصاصات
+        function getRandomColor() {
+            const colors = ["#ff0000", "#ffcc00", "#00ff00", "#00ccff", "#ff00ff"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
     </script>
+
+    <style>
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+
 </body>
 </html>
