@@ -116,3 +116,13 @@ setInterval(() => {
     images[currentIndex].classList.add('active');
 }, 3000);
 
+
+        if (!localStorage.getItem("notificationHidden")) {
+            document.getElementById("notification").style.display = "block";
+        }
+
+        function hideNotification() {
+            document.getElementById("notification").style.display = "none";
+            localStorage.setItem("notificationHidden", "true");
+        }
+    
