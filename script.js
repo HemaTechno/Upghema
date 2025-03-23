@@ -118,11 +118,10 @@ setInterval(() => {
 
 
         if (!localStorage.getItem("notificationHidden")) {
-            document.getElementById("notification").style.display = "block";
-        }
+        document.getElementById("notificationOverlay").style.display = "flex";
+    }
 
-        function hideNotification() {
-            document.getElementById("notification").style.display = "none";
-            localStorage.setItem("notificationHidden", "true");
-        }
-    
+    function hideNotification() {
+        document.getElementById("notificationOverlay").style.display = "none";
+        localStorage.setItem("notificationHidden", "true");
+    }
