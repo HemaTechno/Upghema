@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الأدمن</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+    <!-- زر فتح القائمة -->
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- الشريط الجانبي -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">×</button>
+        <h2>لوحة التحكم</h2>
+        <ul>
+            <li><a href="#" onclick="loadPage('/Add/add-script.html')">إضافة سكربت</a></li>
+            <li><a href="#" onclick="loadPage('/Add/hack.html')">إضافة هاكات</a></li>
+            <li><a href="#" onclick="loadPage('/Add/edit-hack.html')">تعديل الهاكات</a></li>
+          <li><a href="#" onclick="loadPage('/Add/Delete.html')">حذف الاسكربت</a></li>
+          <li><a href="#" onclick="loadPage('/Add/Cong.html')">مشتركين الهديه</a></li>
+          
+            <li><button onclick="logout()">تسجيل الخروج</button></li>
+        </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <iframe id="content-frame" src="/Add/add-script.html"></iframe>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+        }
+
+        function loadPage(page) {
+            document.getElementById("content-frame").src = page;
+        }
+
+        function logout() {
+            alert("تم تسجيل الخروج!");
+        }
+    </script>
+<script type="module" src="firebase-config.js"></script>
+    <script type="module" src="admin.js"></script>
+
+</body>
+</html>
