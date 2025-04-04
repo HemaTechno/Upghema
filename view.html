@@ -275,8 +275,26 @@ body {
     text-decoration: underline;
 }
 
-        
-    </style>
+/* تصميم صندوق المفتاح */
+.key-container {
+    background-color: #000;
+    border: 2px solid #FF0000;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #FF0000;
+    margin: 15px auto;
+    max-width: 300px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.key-container:hover {
+    background-color: #FF0000;
+    color: #000;
+} </style>
 </head>
 <body>
 
@@ -291,7 +309,9 @@ body {
         <div id="codeEditor" class="code-editor">
             <!-- سيتم تحميل كود السكربت هنا -->
         </div>
-
+<div id="keyContainer" class="key-container" onclick="copyKey()">
+    <span id="scriptKey">XXXX-XXXX-XXXX</span>
+</div>
         <div class="action-buttons">
             <button class="download-button" onclick="downloadScript()">
     <img src="https://i.ibb.co/CnGk9R4/image.png" alt="تحميل" style="width: 30px; height: 30px;">
@@ -485,6 +505,24 @@ body {
         zoneId: 'n90p5h4o3m',
     });
 </script>
+<script>
+function copyKey() {
+    const keyText = document.getElementById("scriptKey").innerText;
+    navigator.clipboard.writeText(keyText)
+        .then(() => alert("تم نسخ المفتاح بنجاح!"))
+        .catch(err => alert("حدث خطأ أثناء النسخ"));
+}
 
+// تحميل بيانات المفتاح من Firebase
+async function loadScriptKey() {
+    const doc = await db.collection("scripts").doc(scriptId).get();
+    if (doc.exists) {
+        const script = doc.data();
+        document.getElementById("scriptKey").innerText = script.key || "XXXX-XXXX-XXXX";
+    }
+}
+
+loadScriptKey();
+</script>
 </body>
 </html>
