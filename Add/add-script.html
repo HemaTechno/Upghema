@@ -222,13 +222,12 @@
                 title: `🛠️ سكربت جديد مضاف!`,
                 color: 16711680,
                 fields: [
-                    { name: "📌 العنوان:", value: title, inline: false },
-                    { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
-                    { name: "📝 الوصف:", value: description, inline: false },
-                    { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false }
-              { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false },
-
-                ],
+                { name: "📌 العنوان:", value: title, inline: false },
+                { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
+                { name: "📝 الوصف:", value: description, inline: false },
+                { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false },
+                { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false } // تم تصحيح الفاصلة هنا
+            ],
                 image: { url: imageUrl },
                 footer: { text: "HemaTech.xyz" }
             }]
