@@ -234,29 +234,42 @@
     }
 
     function sendToDiscord(title, mapName, description, scriptName, scriptUrl, imageUrl, scriptKey) {
-        const payload = {
-            embeds: [{
-                title: `🛠️ سكربت جديد مضاف!`,
-                color: 16711680,
-                fields: [
-                    { name: "📌 العنوان:", value: title, inline: false },
-                    { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
-                    { name: "📝 الوصف:", value: description, inline: false },
-                    { name: "📜 اسم السكربت:", value: scriptName, inline: false },
-                    { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false },
-                    { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false }
-                ],
-                image: { url: imageUrl },
-                footer: { text: "HemaTech.xyz" }
+    const payload = {
+        embeds: [{
+            title: `🛠️ سكربت جديد مضاف!`,
+            color: 16711680, // اللون الأحمر
+            fields: [
+                { name: "📌 العنوان:", value: title, inline: false },
+                { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
+                { name: "📝 الوصف:", value: description, inline: false },
+                 { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false },
+                { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false }
+            ],
+            image: { url: imageUrl },
+            footer: { text: "HemaTech.xyz" },
+            // إضافة زر باستخدام components
+        }],
+        // إضافة أزرار تفاعلية (يتطلب Discord API v9+)
+        components: [{
+            type: 1, // ACTION_ROW
+            components: [{
+                type: 2, // BUTTON
+                style: 5, // LINK_STYLE
+                label: "فتح السكربت",
+                url: scriptUrl,
+                emoji: {
+                    name: "🔗"
+                }
             }]
-        };
+        }]
+    };
 
-        fetch(discordWebhookURL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }).catch(error => console.error("خطأ في إرسال البيانات إلى ديسكورد:", error));
-    }
+    fetch(discordWebhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    }).catch(error => console.error("خطأ في إرسال البيانات إلى ديسكورد:", error));
+}
 </script>
 
 </body>
