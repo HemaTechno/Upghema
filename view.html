@@ -378,6 +378,8 @@ body {
                 document.getElementById("scriptImage").src = script.imageUrl;
                 document.getElementById("scriptDescription").innerText = script.description;
                 document.getElementById("codeEditor").innerText = script.scriptName;
+          document.getElementById("scriptKey").innerText = script.scriptKey || "XXXX-XXXX-XXXX";
+    
             } else {
                 document.querySelector(".script-container").innerHTML = "<p>عذرًا، لا يمكن العثور على تفاصيل السكربت.</p>";
             }
