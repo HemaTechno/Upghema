@@ -509,22 +509,15 @@ body {
 </script>
 <script>
 function copyKey() {
-    const keyText = document.getElementById("scriptKey").innerText;
-    navigator.clipboard.writeText(keyText)
-        .then(() => alert("تم نسخ المفتاح بنجاح!"))
-        .catch(err => alert("حدث خطأ أثناء النسخ"));
-}
+        const key = document.getElementById("scriptKey").innerText;
+        navigator.clipboard.writeText(key)
+            .then(() => alert("تم نسخ المفتاح!"))
+            .catch(err => alert("حدث خطأ أثناء النسخ"));
+    }
+
 
 // تحميل بيانات المفتاح من Firebase
-async function loadScriptKey() {
-    const doc = await db.collection("scripts").doc(scriptId).get();
-    if (doc.exists) {
-        const script = doc.data();
-        document.getElementById("scriptKey").innerText = script.key || "XXXX-XXXX-XXXX";
-    }
-}
 
-loadScriptKey();
 </script>
 </body>
 </html>
