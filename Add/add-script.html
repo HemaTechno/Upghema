@@ -120,6 +120,11 @@
             <input type="text" id="scriptName" required>
         </div>
         <div class="form-group">
+    <label for="scriptKey">مفتاح السكربت (اختياري):</label>
+    <input type="text" id="scriptKey">
+</div>
+
+        <div class="form-group">
             <label for="image">رفع صورة:</label>
             <input type="file" id="image" accept="image/*" required>
         </div>
@@ -156,6 +161,8 @@
         const description = document.getElementById("description").value;
         const scriptName = document.getElementById("scriptName").value;
         const imageFile = document.getElementById("image").files[0];
+        const scriptKey = document.getElementById("scriptKey").value || "لا يوجد";
+
         const timestamp = new Date().toLocaleDateString();
 
         if (!imageFile) {
@@ -174,6 +181,7 @@
                 description,
                 scriptName,
                 imageUrl,
+                scriptKey,
                 addedDate: timestamp
             });
 
@@ -218,6 +226,8 @@
                     { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
                     { name: "📝 الوصف:", value: description, inline: false },
                     { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false }
+              { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false },
+
                 ],
                 image: { url: imageUrl },
                 footer: { text: "HemaTech.xyz" }
