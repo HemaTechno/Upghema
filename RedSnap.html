@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحميل فيديو تيك توك بدون علامة مائية</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+    body {
+      background: linear-gradient(to right, #1a1a1a, #121212);
+      color: white;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
+    }
+    h1 {
+      color: #ff0000;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px #000;
+    }
+    input {
+      width: 90%;
+      max-width: 500px;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background-color: #2b2b2b;
+      color: white;
+    }
+    button {
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #e60000;
+    }
+    .result {
+      margin-top: 30px;
+      max-width: 600px;
+      width: 100%;
+      background-color: #1e1e1e;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+    .video-info img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 2px solid #ff0000;
+    }
+    .video-info h3 {
+      margin: 10px 0 5px;
+      color: #ff4d4d;
+      font-size: 20px;
+    }
+    .video-info p {
+      font-size: 14px;
+      color: #ccc;
+    }
+    .download-buttons a {
+      display: inline-block;
+      margin: 10px 15px;
+      padding: 10px 25px;
+      background-color: #ff0000;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .download-buttons a:hover {
+      background-color: #e60000;
+    }
+  </style>
+</head>
+<body>
+  <h1>تحميل فيديو تيك توك بدون علامة مائية</h1>
+  <input type="text" id="tiktokUrl" placeholder="أدخل رابط فيديو TikTok هنا">
+  <button onclick="downloadVideo()">تحميل</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    async function downloadVideo() {
+      const url = document.getElementById("tiktokUrl").value.trim();
+      if (!url) return alert("من فضلك أدخل رابط الفيديو.");
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "جاري التحميل...";
+
+      try {
+        const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (data && data.data && data.data.play) {
+          const videoUrl = data.data.play;
+          const musicUrl = data.data.music;
+          const authorName = data.data.author.nickname;
+          const authorAvatar = data.data.author.avatar;
+          const desc = data.data.title;
+
+          resultDiv.innerHTML = `
+            <div class="video-info">
+              <img src="${authorAvatar}" alt="Avatar">
+              <h3>${authorName}</h3>
+              <p>${desc}</p>
+            </div>
+            <video controls width="100%" style="max-width:100%; margin-top: 15px; border-radius: 10px;">
+              <source src="${videoUrl}" type="video/mp4">
+              متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <div class="download-buttons">
+              <a href="${videoUrl}" download="HemaSnap.mp4">تحميل MP4</a>
+              <a href="${musicUrl}" download="HemaSnap.mp3">تحميل MP3</a>
+            </div>`;
+        } else {
+          resultDiv.innerHTML = "تعذر جلب الفيديو. تأكد من صحة الرابط أو حاول لاحقًا.";
+        }
+      } catch (err) {
+        resultDiv.innerHTML = "حدث خطأ أثناء الاتصال بالخادم.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
