@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تحميل فيديو تيك توك بدون علامة مائية</title>
+  <title>تحميل فيديو يوتيوب</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
     body {
-      background: linear-gradient(to right, #2c2c2c, #121212);
-      color: white;
+      background: #181818;
       font-family: 'Tajawal', sans-serif;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 50px 20px;
-      height: 100vh;
+      padding: 40px 20px;
       justify-content: center;
+      height: 100vh;
       margin: 0;
     }
 
@@ -25,7 +25,6 @@
       font-size: 2.5rem;
       margin-bottom: 30px;
       text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
-      letter-spacing: 1.5px;
     }
 
     input {
@@ -87,7 +86,6 @@
       margin: 10px 0 8px;
       color: #ff4d4d;
       font-size: 22px;
-      letter-spacing: 1px;
     }
 
     .video-info p {
@@ -115,44 +113,41 @@
   </style>
 </head>
 <body>
-  <h1>تحميل فيديو تيك توك بدون علامة مائية</h1>
-  <input type="text" id="tiktokUrl" placeholder="أدخل رابط فيديو TikTok هنا">
+  <h1>تحميل فيديو يوتيوب</h1>
+  <input type="text" id="youtubeUrl" placeholder="أدخل رابط فيديو يوتيوب هنا">
   <button onclick="downloadVideo()">تحميل</button>
   <div class="result" id="result"></div>
 
   <script>
     async function downloadVideo() {
-      const url = document.getElementById("tiktokUrl").value.trim();
+      const url = document.getElementById("youtubeUrl").value.trim();
       if (!url) return alert("من فضلك أدخل رابط الفيديو.");
 
       const resultDiv = document.getElementById("result");
       resultDiv.innerHTML = "جاري التحميل...";
 
       try {
-        const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+        const apiUrl = `https://your-server-endpoint.com/api/youtube?url=${encodeURIComponent(url)}`;
         const res = await fetch(apiUrl);
         const data = await res.json();
 
-        if (data && data.data && data.data.play) {
-          const videoUrl = data.data.play;
-          const musicUrl = data.data.music;
-          const authorName = data.data.author.nickname;
-          const authorAvatar = data.data.author.avatar;
-          const desc = data.data.title;
+        if (data && data.videoUrl) {
+          const videoUrl = data.videoUrl;
+          const authorName = data.authorName || "مجهول";
+          const videoTitle = data.videoTitle || "فيديو يوتيوب";
 
           resultDiv.innerHTML = `
             <div class="video-info">
-              <img src="${authorAvatar}" alt="Avatar">
+              <img src="${data.authorAvatar || 'https://via.placeholder.com/120'}" alt="Avatar">
               <h3>${authorName}</h3>
-              <p>${desc}</p>
+              <p>${videoTitle}</p>
             </div>
             <video controls width="100%" style="max-width:100%; margin-top: 15px; border-radius: 10px;">
               <source src="${videoUrl}" type="video/mp4">
               متصفحك لا يدعم تشغيل الفيديو.
             </video>
             <div class="download-buttons">
-              <a href="${videoUrl}" download="HemaSnap.mp4">تحميل MP4</a>
-              <a href="${musicUrl}" download="HemaSnap.mp3">تحميل MP3</a>
+              <a href="${videoUrl}" download="YouTube-Video.mp4">تحميل MP4</a>
             </div>`;
         } else {
           resultDiv.innerHTML = "تعذر جلب الفيديو. تأكد من صحة الرابط أو حاول لاحقًا.";
