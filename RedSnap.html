@@ -1,162 +1,597 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تحميل فيديو يوتيوب</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-
-    body {
-      background: #181818;
-      font-family: 'Tajawal', sans-serif;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    h1 {
-      color: #ff4d4d;
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
-    }
-
-    input {
-      width: 100%;
-      max-width: 600px;
-      padding: 18px;
-      font-size: 18px;
-      border: 2px solid #ff4d4d;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      background-color: #2b2b2b;
-      color: white;
-      box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-      transition: all 0.3s ease;
-    }
-
-    input:focus {
-      border-color: #ff0000;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
-    }
-
-    button {
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #e60000;
-      transform: translateY(-2px);
-    }
-
-    .result {
-      margin-top: 30px;
-      max-width: 650px;
-      width: 100%;
-      background-color: #1e1e1e;
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-    }
-
-    .video-info img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-      border: 3px solid #ff4d4d;
-    }
-
-    .video-info h3 {
-      margin: 10px 0 8px;
-      color: #ff4d4d;
-      font-size: 22px;
-    }
-
-    .video-info p {
-      font-size: 16px;
-      color: #ccc;
-      margin-bottom: 20px;
-    }
-
-    .download-buttons a {
-      display: inline-block;
-      margin: 12px 20px;
-      padding: 12px 28px;
-      background-color: #ff4d4d;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .download-buttons a:hover {
-      background-color: #e60000;
-      transform: translateY(-2px);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنزيل فيديوهات تيك توك بدون علامة مائية</title>
+    <style>
+        :root {
+            --primary: #FE2C55;
+            --secondary: #25F4EE;
+            --dark: #161823;
+            --light: #FFFFFF;
+            --gray: #f1f1f2;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .input-section {
+            margin-bottom: 25px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 244, 238, 0.2);
+        }
+        .options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: white;
+            cursor: pointer;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: #e41e4a;
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn i {
+            font-size: 18px;
+        }
+        .result-container {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #000;
+        }
+        .video-player {
+            width: 100%;
+            display: block;
+            max-height: 500px;
+        }
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .download-card {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .download-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .badge-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .badge-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .download-link:hover {
+            background-color: #e41e4a;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(254, 44, 85, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            text-align: center;
+        }
+        .info-box {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+        .info-box h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-box ol {
+            padding-left: 20px;
+        }
+        .info-box li {
+            margin-bottom: 5px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .options {
+                flex-direction: column;
+            }
+            .download-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <h1>تحميل فيديو يوتيوب</h1>
-  <input type="text" id="youtubeUrl" placeholder="أدخل رابط فيديو يوتيوب هنا">
-  <button onclick="downloadVideo()">تحميل</button>
-  <div class="result" id="result"></div>
-
-  <script>
-    async function downloadVideo() {
-      const url = document.getElementById("youtubeUrl").value.trim();
-      if (!url) return alert("من فضلك أدخل رابط الفيديو.");
-
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "جاري التحميل...";
-
-      try {
-        const apiUrl = `https://your-server-endpoint.com/api/youtube?url=${encodeURIComponent(url)}`;
-        const res = await fetch(apiUrl);
-        const data = await res.json();
-
-        if (data && data.videoUrl) {
-          const videoUrl = data.videoUrl;
-          const authorName = data.authorName || "مجهول";
-          const videoTitle = data.videoTitle || "فيديو يوتيوب";
-
-          resultDiv.innerHTML = `
-            <div class="video-info">
-              <img src="${data.authorAvatar || 'https://via.placeholder.com/120'}" alt="Avatar">
-              <h3>${authorName}</h3>
-              <p>${videoTitle}</p>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-tiktok"></i>
             </div>
-            <video controls width="100%" style="max-width:100%; margin-top: 15px; border-radius: 10px;">
-              <source src="${videoUrl}" type="video/mp4">
-              متصفحك لا يدعم تشغيل الفيديو.
-            </video>
-            <div class="download-buttons">
-              <a href="${videoUrl}" download="YouTube-Video.mp4">تحميل MP4</a>
-            </div>`;
-        } else {
-          resultDiv.innerHTML = "تعذر جلب الفيديو. تأكد من صحة الرابط أو حاول لاحقًا.";
-        }
-      } catch (err) {
-        resultDiv.innerHTML = "حدث خطأ أثناء الاتصال بالخادم.";
-        console.error(err);
-      }
-    }
-  </script>
+            <h1>تنزيل فيديوهات تيك توك</h1>
+            <p class="description">حمل فيديوهاتك المفضلة بدون علامة مائية وبجودة عالية</p>
+        </header>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="tiktok-url">رابط الفيديو:</label>
+                <input type="text" id="tiktok-url" placeholder="https://vt.tiktok.com/... أو https://www.tiktok.com/...">
+            </div>
+            
+            <div class="options">
+                <div class="option-group">
+                    <label for="format">صيغة التنزيل:</label>
+                    <select id="format">
+                        <option value="mp4">MP4 (فيديو)</option>
+                        <option value="mp3">MP3 (صوت فقط)</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label for="quality">جودة الفيديو:</label>
+                    <select id="quality">
+                        <option value="high">عالية الجودة</option>
+                        <option value="medium">متوسطة الجودة</option>
+                        <option value="low">منخفضة الجودة</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="download-btn" class="btn">
+                <i class="fas fa-download"></i> تحميل الفيديو
+            </button>
+        </div>
+        
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> طريقة الاستخدام:</h3>
+            <ol>
+                <li>انسخ رابط الفيديو من تطبيق تيك توك</li>
+                <li>الصق الرابط في الحقل بالأعلى</li>
+                <li>اختر الصيغة والجودة المطلوبة</li>
+                <li>اضغط على زر "تحميل الفيديو"</li>
+                <li>انتظر حتى يتم تحضير الفيديو ثم انقر على زر التنزيل</li>
+            </ol>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>جاري تحضير الفيديو، الرجاء الانتظار...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="result-container" id="result-container">
+            <h2 style="margin-bottom: 15px;">الفيديو جاهز للتنزيل!</h2>
+            
+            <div class="video-container" id="video-container">
+                <video controls class="video-player" id="video-player"></video>
+            </div>
+            
+            <h3 style="margin-bottom: 15px;">خيارات التنزيل المتاحة:</h3>
+            <div class="download-options" id="download-options">
+                <!-- سيتم تعبئة هذا القسم تلقائياً -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('download-btn');
+            const tiktokUrlInput = document.getElementById('tiktok-url');
+            const formatSelect = document.getElementById('format');
+            const qualitySelect = document.getElementById('quality');
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error');
+            const resultContainer = document.getElementById('result-container');
+            const videoPlayer = document.getElementById('video-player');
+            const videoContainer = document.getElementById('video-container');
+            const downloadOptions = document.getElementById('download-options');
+            
+            // قائمة بخوادم API البديلة
+            const API_SERVERS = [
+                'https://api.tiklydown.eu.org/api/info?url=',
+                'https://api.tiktokvideosaver.com/video-info?url=',
+                'https://www.tikwm.com/api/?url='
+            ];
+            
+            downloadBtn.addEventListener('click', async function() {
+                const tiktokUrl = tiktokUrlInput.value.trim();
+                const format = formatSelect.value;
+                const quality = qualitySelect.value;
+                
+                // إخفاء النتائج السابقة وإظهار التحميل
+                resultContainer.style.display = 'none';
+                errorElement.style.display = 'none';
+                loadingElement.style.display = 'block';
+                
+                // التحقق من صحة الرابط
+                if (!isValidTikTokUrl(tiktokUrl)) {
+                    showError('الرجاء إدخال رابط فيديو تيك توك صحيح (يبدأ بـ https://vt.tiktok.com/ أو https://www.tiktok.com/)');
+                    loadingElement.style.display = 'none';
+                    return;
+                }
+                
+                try {
+                    let videoData = null;
+                    
+                    // تجربة جميع خوادم API حتى يعمل أحدها
+                    for (const apiUrl of API_SERVERS) {
+                        try {
+                            const response = await fetchWithTimeout(`${apiUrl}${encodeURIComponent(tiktokUrl)}`, 10000);
+                            
+                            if (!response.ok) {
+                                continue;
+                            }
+                            
+                            const data = await response.json();
+                            
+                            if (data.data || data.video || data.info) {
+                                videoData = data.data || data.video || data.info;
+                                break;
+                            }
+                        } catch (err) {
+                            console.log(`API ${apiUrl} failed:`, err.message);
+                            continue;
+                        }
+                    }
+                    
+                    if (!videoData) {
+                        throw new Error('جميع خوادم API فشلت في الاستجابة');
+                    }
+                    
+                    // إخفاء التحميل وإظهار النتائج
+                    loadingElement.style.display = 'none';
+                    
+                    // عرض الفيديو إذا كان MP4
+                    if (format === 'mp4') {
+                        const videoUrl = getVideoUrl(videoData, quality);
+                        if (videoUrl) {
+                            videoPlayer.src = videoUrl;
+                            videoContainer.style.display = 'block';
+                        } else {
+                            videoContainer.style.display = 'none';
+                            showError('لم يتم العثور على رابط الفيديو');
+                        }
+                    } else {
+                        videoContainer.style.display = 'none';
+                    }
+                    
+                    // إنشاء خيارات التحميل
+                    createDownloadOptions(videoData, format, quality);
+                    
+                    // إظهار قسم النتائج
+                    resultContainer.style.display = 'block';
+                    
+                } catch (error) {
+                    loadingElement.style.display = 'none';
+                    showError('حدث خطأ أثناء جلب الفيديو. يرجى المحاولة لاحقاً أو استخدام رابط آخر.');
+                    console.error('Error:', error);
+                }
+            });
+            
+            // دالة للتحقق من صحة رابط تيك توك
+            function isValidTikTokUrl(url) {
+                return /^(https?:\/\/)?(www\.|vm\.|vt\.)?tiktok\.com\/.+|https?:\/\/vt\.tiktok\.com\/.+/.test(url);
+            }
+            
+            // دالة لجلب بيانات مع وقت محدد
+            function fetchWithTimeout(url, timeout) {
+                return Promise.race([
+                    fetch(url),
+                    new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout')), timeout)
+                    )
+                ]);
+            }
+            
+            // دالة للحصول على رابط الفيديو المناسب حسب الجودة
+            function getVideoUrl(videoData, quality) {
+                if (!videoData) return null;
+                
+                // محاولة استخراج الروابط حسب هيكل البيانات المختلف من APIs
+                try {
+                    if (videoData.play) {
+                        return videoData.play; // لـ tikwm.com
+                    }
+                    if (videoData.video && videoData.video.downloadAddr) {
+                        return videoData.video.downloadAddr; // لبعض الـ APIs الأخرى
+                    }
+                    if (videoData.download_url) {
+                        return videoData.download_url;
+                    }
+                    if (videoData.video_url) {
+                        return videoData.video_url;
+                    }
+                    
+                    // إذا كانت هناك خيارات متعددة للجودة
+                    if (quality === 'high' && videoData.hdplay) {
+                        return videoData.hdplay;
+                    }
+                    if (videoData.play) {
+                        return videoData.play;
+                    }
+                    if (videoData.url) {
+                        return videoData.url;
+                    }
+                } catch (e) {
+                    console.error('Error extracting video URL:', e);
+                    return null;
+                }
+                
+                return null;
+            }
+            
+            // دالة لإنشاء خيارات التحميل
+            function createDownloadOptions(videoData, selectedFormat, selectedQuality) {
+                downloadOptions.innerHTML = '';
+                
+                if (selectedFormat === 'mp4') {
+                    // خيارات تحميل الفيديو بجودات مختلفة
+                    const qualities = [
+                        { 
+                            id: 'high', 
+                            label: 'عالية الجودة', 
+                            url: videoData.hdplay || videoData.play || videoData.download_url || videoData.video?.downloadAddr,
+                            available: !!(videoData.hdplay || videoData.play)
+                        },
+                        { 
+                            id: 'medium', 
+                            label: 'متوسطة الجودة', 
+                            url: videoData.play || videoData.download_url || videoData.video?.downloadAddr,
+                            available: !!(videoData.play || videoData.download_url)
+                        },
+                        { 
+                            id: 'low', 
+                            label: 'منخفضة الجودة', 
+                            url: videoData.download_url || videoData.play,
+                            available: !!(videoData.download_url || videoData.play)
+                        }
+                    ];
+                    
+                    qualities.forEach(quality => {
+                        if (!quality.available) return;
+                        
+                        const optionCard = document.createElement('div');
+                        optionCard.className = 'download-card';
+                        
+                        const title = document.createElement('h3');
+                        title.textContent = 'تحميل فيديو ';
+                        
+                        const qualityBadge = document.createElement('span');
+                        qualityBadge.className = 'badge';
+                        qualityBadge.classList.add(quality.id === 'high' ? 'badge-primary' : 'badge-secondary');
+                        qualityBadge.textContent = quality.label;
+                        title.appendChild(qualityBadge);
+                        
+                        const sizeInfo = document.createElement('p');
+                        sizeInfo.textContent = quality.id === 'high' ? '(أفضل جودة متاحة)' : 
+                                              quality.id === 'medium' ? '(جودة متوسطة)' : '(جودة منخفضة)';
+                        
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = quality.url;
+                        downloadLink.className = 'download-link';
+                        downloadLink.innerHTML = '<i class="fas fa-download"></i> تنزيل الآن';
+                        downloadLink.setAttribute('download', `tiktok-video-${quality.id}.mp4`);
+                        
+                        // تمييز الجودة المختارة
+                        if (quality.id === selectedQuality) {
+                            optionCard.style.border = '2px solid var(--primary)';
+                            optionCard.style.boxShadow = '0 0 0 2px rgba(254, 44, 85, 0.2)';
+                        }
+                        
+                        optionCard.appendChild(title);
+                        optionCard.appendChild(sizeInfo);
+                        optionCard.appendChild(downloadLink);
+                        downloadOptions.appendChild(optionCard);
+                    });
+                    
+                    if (downloadOptions.children.length === 0) {
+                        const errorCard = document.createElement('div');
+                        errorCard.className = 'download-card';
+                        errorCard.innerHTML = '<p>لا تتوفر خيارات تحميل للفيديو حالياً. يرجى المحاولة لاحقاً.</p>';
+                        downloadOptions.appendChild(errorCard);
+                    }
+                } else {
+                    // خيار تحميل الصوت فقط (MP3)
+                    const optionCard = document.createElement('div');
+                    optionCard.className = 'download-card';
+                    
+                    const title = document.createElement('h3');
+                    title.textContent = 'تحميل صوت MP3';
+                    
+                    const sizeInfo = document.createElement('p');
+                    sizeInfo.textContent = '(صوت الفيديو فقط)';
+                    
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = videoData.music || videoData.audio || '#';
+                    downloadLink.className = 'download-link';
+                    downloadLink.innerHTML = '<i class="fas fa-download"></i> تنزيل الآن';
+                    downloadLink.setAttribute('download', 'tiktok-audio.mp3');
+                    
+                    // إذا لم يكن هناك رابط صوت، تعطيل الزر
+                    if (!videoData.music && !videoData.audio) {
+                        downloadLink.style.opacity = '0.6';
+                        downloadLink.style.cursor = 'not-allowed';
+                        downloadLink.onclick = (e) => e.preventDefault();
+                        sizeInfo.textContent = '(غير متوفر حالياً)';
+                    }
+                    
+                    optionCard.appendChild(title);
+                    optionCard.appendChild(sizeInfo);
+                    optionCard.appendChild(downloadLink);
+                    downloadOptions.appendChild(optionCard);
+                }
+            }
+            
+            // دالة لعرض رسائل الخطأ
+            function showError(message) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            
+            // السماح بلصق الرابط مباشرة عند الضغط على Ctrl+V
+            document.addEventListener('paste', function(e) {
+                if (e.target !== tiktokUrlInput) {
+                    const pastedText = e.clipboardData.getData('text');
+                    if (isValidTikTokUrl(pastedText)) {
+                        tiktokUrlInput.value = pastedText;
+                        tiktokUrlInput.focus();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
