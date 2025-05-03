@@ -3,7 +3,7 @@
 <head>
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Hack</title>
+    <title>Add New app</title>
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -121,7 +121,7 @@
         // Function to send message to Discord
         function sendToDiscord(title, description, platform, downloadLink) {
             const payload = {
-                content: `📢 **New Hack Added!**\n\n📌 **Title:** ${title}\n📝 **Description:** ${description}\n🖥 **Platform:** ${platform}\n🔗 **Download Link:** ${downloadLink}`
+                content: `📢 **New app Added!**\n\n📌 **Title:** ${title}\n📝 **Description:** ${description}\n🖥 **Platform:** ${platform}\n🔗 **Download Link:** ${downloadLink}`
             };
 
             fetch(discordWebhookURL, {
