@@ -1,18 +1,24 @@
-import { auth } from "./firebase-config.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { auth } from './firebase-config.js';
+import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-// التحقق من تسجيل الدخول
 onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = "login.html"; // إعادة التوجيه لصفحة تسجيل الدخول إذا لم يكن الأدمن مسجلًا
-    }
+  if (!user) {
+    window.location.href = "index.html"; // تحويل لصفحة تسجيل الدخول
+  } else {
+    const name = user.displayName;
+    const photo = user.photoURL;
+
+    document.getElementById("user-name").textContent = name;
+    document.getElementById("user-pic").src = photo;
+  }
 });
 
-// دالة تسجيل الخروج
-function logout() {
-    signOut(auth).then(() => {
-        window.location.href = "login.html";
-    });
-}
-
-window.logout = logout;
+window.logout = async function () {
+  try {
+    await signOut(auth);
+    alert("تم تسجيل الخروج");
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("خطأ في تسجيل الخروج:", error);
+  }
+};
