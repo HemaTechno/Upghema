@@ -18,13 +18,6 @@
             margin: 0;
             padding: 20px;
         }
-
-        .header {
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 20px;
-        }
-
         .form-container {
             background-color: #000000;
             border: 2px solid #ff0000;
@@ -34,14 +27,7 @@
             max-width: 500px;
             box-shadow: 0 10px 20px rgba(255, 0, 0, 0.25);
             text-align: right;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
-
-        .form-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(255, 0, 0, 0.5);
-        }
-
         .header h1 {
             font-size: 24px;
             color: #ff0000;
@@ -50,19 +36,13 @@
             padding-bottom: 10px;
             text-align: center;
         }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
-
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-size: 16px;
             color: #ff0000;
             margin-bottom: 5px;
         }
-
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
@@ -71,20 +51,8 @@
             background-color: #2a2a2a;
             border: 2px solid #ff0000;
             border-radius: 6px;
-            transition: border-color 0.3s;
-            font-family: 'Cairo', sans-serif;
         }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: #ff0000;
-            outline: none;
-        }
-
+        .form-group textarea { resize: vertical; min-height: 100px; }
         .submit-button {
             padding: 12px 0;
             width: 100%;
@@ -94,15 +62,7 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            font-family: 'Cairo', sans-serif;
         }
-
-        .submit-button:hover {
-            background-color: #a71d2a;
-            transform: translateY(-2px);
-        }
-
         .copy-message {
             display: none;
             color: #28a745;
@@ -113,11 +73,9 @@
     </style>
 </head>
 <body>
-
 <div class="header">
     <h1>إضافة سكربت جديد</h1>
 </div>
-
 <div class="form-container">
     <form id="addScriptForm">
         <div class="form-group">
@@ -140,7 +98,6 @@
             <label for="scriptKey">مفتاح السكربت (اختياري):</label>
             <input type="text" id="scriptKey">
         </div>
-
         <div class="form-group">
             <label for="image">رفع صورة:</label>
             <input type="file" id="image" accept="image/*" required>
@@ -149,26 +106,31 @@
     </form>
     <div class="copy-message" id="copyMessage">تم نسخ رابط السكربت بنجاح!</div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage-compat.js"></script>
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
-        authDomain: "treng-c6027.firebaseapp.com",
-        projectId: "treng-c6027",
-        storageBucket: "treng-c6027.appspot.com",
-        messagingSenderId: "305527546716",
-        appId: "1:305527546716:web:fd072a58200f31bb42d799",
-        measurementId: "G-3JFKFT2LT0"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
+    authDomain: "treng-c6027.firebaseapp.com",
+    projectId: "treng-c6027",
+    storageBucket: "treng-c6027.appspot.com",
+    messagingSenderId: "305527546716",
+    appId: "1:305527546716:web:fd072a58200f31bb42d799",
+    measurementId: "G-3JFKFT2LT0"
+};
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
+const discordWebhookURL = "https://discord.com/api/webhooks/1352331396185718844/q6DgscH7DoaQVq71npXhDfsf1yn62Ucn0rHZheQeRNv8rdI146B3L2N3n2uK38ivv_Qi";
 
-    const discordWebhookURL = "https://discord.com/api/webhooks/1352331396185718844/q6DgscH7DoaQVq71npXhDfsf1yn62Ucn0rHZheQeRNv8rdI146B3L2N3n2uK38ivv_Qi";
+firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+        window.location.href = "/login.html";
+        return;
+    }
 
     document.getElementById("addScriptForm").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -179,8 +141,6 @@
         const scriptName = document.getElementById("scriptName").value;
         const imageFile = document.getElementById("image").files[0];
         const scriptKey = document.getElementById("scriptKey").value || "لا يوجد";
-
-        const timestamp = new Date().toLocaleDateString();
 
         if (!imageFile) {
             alert("يرجى رفع صورة.");
@@ -199,67 +159,63 @@
                 scriptName,
                 imageUrl,
                 scriptKey,
-                addedDate: timestamp
+                addedDate: new Date().toLocaleDateString(),
+                uid: user.uid,
+                userEmail: user.email
             });
 
             const scriptUrl = `https://hematech.xyz/view.html?id=${docRef.id}`;
             copyToClipboard(scriptUrl);
             showCopyMessage();
-
-            // إرسال البيانات إلى ديسكورد
             sendToDiscord(title, mapName, description, scriptName, scriptUrl, imageUrl, scriptKey);
-
             document.getElementById("addScriptForm").reset();
         } catch (error) {
             console.error("حدث خطأ:", error);
             alert("حدث خطأ أثناء إضافة السكربت.");
         }
     });
+});
 
-    function copyToClipboard(text) {
-        const tempInput = document.createElement("input");
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-    }
+function copyToClipboard(text) {
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+}
 
-    function showCopyMessage() {
-        const copyMessage = document.getElementById("copyMessage");
-        copyMessage.style.display = "block";
-        setTimeout(() => {
-            copyMessage.style.display = "none";
-        }, 3000);
-    }
+function showCopyMessage() {
+    const copyMessage = document.getElementById("copyMessage");
+    copyMessage.style.display = "block";
+    setTimeout(() => {
+        copyMessage.style.display = "none";
+    }, 3000);
+}
 
-    function sendToDiscord(title, mapName, description, scriptName, scriptUrl, imageUrl, scriptKey) {
+function sendToDiscord(title, mapName, description, scriptName, scriptUrl, imageUrl, scriptKey) {
     const payload = {
         embeds: [{
             title: `🛠️ سكربت جديد مضاف!`,
-            color: 16711680, // اللون الأحمر
+            color: 16711680,
             fields: [
-                { name: "📌 العنوان:", value: title, inline: false },
-                { name: "🎮 اسم اللعبة:", value: mapName, inline: false },
-                { name: "📝 الوصف:", value: description, inline: false },
-                 { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})`, inline: false },
-                { name: "🔑 مفتاح السكربت:", value: scriptKey, inline: false }
+                { name: "📌 العنوان:", value: title },
+                { name: "🎮 اسم اللعبة:", value: mapName },
+                { name: "📝 الوصف:", value: description },
+                { name: "🔗 رابط السكربت:", value: `[اضغط هنا](${scriptUrl})` },
+                { name: "🔑 مفتاح السكربت:", value: scriptKey }
             ],
             image: { url: imageUrl },
-            footer: { text: "HemaTech.xyz" },
-            // إضافة زر باستخدام components
+            footer: { text: "HemaTech.xyz" }
         }],
-        // إضافة أزرار تفاعلية (يتطلب Discord API v9+)
         components: [{
-            type: 1, // ACTION_ROW
+            type: 1,
             components: [{
-                type: 2, // BUTTON
-                style: 5, // LINK_STYLE
+                type: 2,
+                style: 5,
                 label: "فتح السكربت",
                 url: scriptUrl,
-                emoji: {
-                    name: "🔗"
-                }
+                emoji: { name: "🔗" }
             }]
         }]
     };
@@ -268,9 +224,8 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-    }).catch(error => console.error("خطأ في إرسال البيانات إلى ديسكورد:", error));
+    }).catch(console.error);
 }
 </script>
-
 </body>
 </html>
