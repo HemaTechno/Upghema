@@ -1,23 +1,160 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل دخول جوجل</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap');
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .container {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4285F4;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #357ae8;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #status {
+      margin-top: 10px;
+      color: yellow;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>تسجيل الدخول بجوجل</h2>
+    <button id="google-login">تسجيل الدخول</button>
 
-    <div class="login-container">
-        <h2>تسجيل الدخول</h2>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="login()">تسجيل الدخول</button>
-        <p id="error-message"></p>
+    <div id="verify-section" class="hidden">
+      <input type="text" id="verification-code" placeholder="أدخل رمز التحقق">
+      <button id="verify-btn">تحقق</button>
     </div>
 
-    <script type="module" src="firebase-config.js"></script>
-    <script type="module" src="auth.js"></script>
+    <p id="status"></p>
+  </div>
 
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    // إعداد Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAFIYOG72TVwBbm_-M4O2fULVbAV5M1c60",
+  authDomain: "link-17d13.firebaseapp.com",
+  projectId: "link-17d13",
+  storageBucket: "link-17d13.firebasestorage.app",
+  messagingSenderId: "82805682441",
+  appId: "1:82805682441:web:5a921fdcdd2c2a236623d8",
+  measurementId: "G-TMQV1S5BPG"
+};
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // إعداد EmailJS
+    emailjs.init("sCPwwv_HxKqZ4Cv3X");
+
+    let generatedCode = "";
+    let userData = {};
+
+    document.getElementById('google-login').onclick = async () => {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+
+        userData = {
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL
+        };
+
+        // توليد كود تحقق عشوائي
+        generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // إرسال الكود عبر البريد
+        await emailjs.send("service_xum3xhh", "template_pq1zshc", {
+          to_name: userData.name,
+          to_email: userData.email,
+          message: `رمز التحقق الخاص بك هو: ${generatedCode}`
+        });
+
+        document.getElementById('status').innerText = "✅ تم إرسال كود التحقق إلى بريدك الإلكتروني.";
+        document.getElementById('verify-section').classList.remove('hidden');
+
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').innerText = "❌ حدث خطأ في تسجيل الدخول.";
+      }
+    };
+
+    document.getElementById('verify-btn').onclick = async () => {
+      const code = document.getElementById('verification-code').value;
+      if (code === generatedCode) {
+        document.getElementById('status').innerText = "✅ تم التحقق بنجاح! جاري تحويلك...";
+
+        // حفظ بيانات المستخدم
+        await db.collection("users").doc(userData.uid).set(userData);
+
+        // تحويل المستخدم
+        setTimeout(() => {
+          window.location.href = "profile.html"; // صفحة الملف الشخصي
+        }, 1500);
+      } else {
+        document.getElementById('status').innerText = "❌ كود التحقق غير صحيح.";
+      }
+    };
+  </script>
 </body>
 </html>
