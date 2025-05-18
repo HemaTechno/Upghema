@@ -16,6 +16,7 @@
       height: 100vh;
       color: white;
     }
+
     .container {
       background: rgba(255,255,255,0.05);
       padding: 30px;
@@ -26,6 +27,7 @@
       width: 90%;
       max-width: 400px;
     }
+
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -37,9 +39,11 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     button:hover {
       background-color: #357ae8;
     }
+
     input {
       display: block;
       width: 100%;
@@ -49,9 +53,11 @@
       border: none;
       font-size: 1rem;
     }
+
     .hidden {
       display: none;
     }
+
     #status {
       margin-top: 10px;
       color: yellow;
@@ -62,20 +68,39 @@
   <div class="container">
     <h2>تسجيل الدخول بجوجل</h2>
     <button id="google-login">تسجيل الدخول</button>
+
     <div id="verify-section" class="hidden">
       <input type="text" id="verification-code" placeholder="أدخل رمز التحقق">
       <button id="verify-btn">تحقق</button>
     </div>
+
     <p id="status"></p>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-  <!-- استيراد firebase-config -->
-  <script type="module">
-    import { auth, provider, db, signInWithPopup, doc, setDoc } from './firebase-config.js';
+  <script>
+    // إعداد Firebase
+   const firebaseConfig = {
+  apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
+  authDomain: "treng-c6027.firebaseapp.com",
+  projectId: "treng-c6027",
+  storageBucket: "treng-c6027.appspot.com",
+  messagingSenderId: "305527546716",
+  appId: "1:305527546716:web:fd072a58200f31bb42d799",
+  measurementId: "G-3JFKFT2LT0"
+};
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
+    // إعداد EmailJS
     emailjs.init("sCPwwv_HxKqZ4Cv3X");
 
     let generatedCode = "";
@@ -83,7 +108,8 @@
 
     document.getElementById('google-login').onclick = async () => {
       try {
-        const result = await signInWithPopup(auth, provider);
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
         const user = result.user;
 
         userData = {
@@ -93,8 +119,10 @@
           photoURL: user.photoURL
         };
 
+        // توليد كود تحقق عشوائي
         generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
+        // إرسال الكود عبر البريد
         await emailjs.send("service_xum3xhh", "template_pq1zshc", {
           to_name: userData.name,
           to_email: userData.email,
@@ -115,10 +143,12 @@
       if (code === generatedCode) {
         document.getElementById('status').innerText = "✅ تم التحقق بنجاح! جاري تحويلك...";
 
-        await setDoc(doc(db, "users", userData.uid), userData);
+        // حفظ بيانات المستخدم
+        await db.collection("users").doc(userData.uid).set(userData);
 
+        // تحويل المستخدم
         setTimeout(() => {
-          window.location.href = "profile.html";
+          window.location.href = "profile.html"; // صفحة الملف الشخصي
         }, 1500);
       } else {
         document.getElementById('status').innerText = "❌ كود التحقق غير صحيح.";
