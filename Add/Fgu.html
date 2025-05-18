@@ -183,22 +183,14 @@
     const provider = new GoogleAuthProvider();
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("user-name").innerText = user.displayName;
-        document.getElementById("user-img").src = user.photoURL;
-      } else {
-        signInWithPopup(auth, provider)
-          .then((result) => {
-            const user = result.user;
-            document.getElementById("user-name").innerText = user.displayName;
-            document.getElementById("user-img").src = user.photoURL;
-          })
-          .catch((error) => {
-            alert("فشل تسجيل الدخول!");
-            console.error(error);
-          });
-      }
-    });
+  if (user) {
+    document.getElementById("user-name").innerText = user.displayName;
+    document.getElementById("user-img").src = user.photoURL;
+  } else {
+    window.location.href = "/login.html"; // ← توجيه للصفحة
+  }
+});
+
 
     window.logout = function () {
       signOut(auth).then(() => {
