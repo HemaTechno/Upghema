@@ -6,13 +6,19 @@
   <title>لوحة تحكم الأدمن</title>
   <link rel="stylesheet" href="/css/admin.css"/>
   <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #000;
+      color: white;
+    }
+
     #user-info {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       padding: 10px 20px;
       background-color: #111;
-      color: white;
       border-bottom: 1px solid red;
       gap: 10px;
     }
@@ -29,27 +35,80 @@
       top: 70px;
       left: 10px;
       z-index: 1000;
+      padding: 10px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #111;
+      transition: 0.3s;
+      padding: 20px;
+      border-right: 1px solid red;
+    }
+
+    .sidebar h2 {
+      color: red;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a, .sidebar ul li button {
+      color: white;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: red;
+      font-size: 20px;
+      cursor: pointer;
+      margin-bottom: 20px;
     }
 
     iframe {
       width: 100%;
-      height: calc(100vh - 70px); /* تكييف الارتفاع بعد الشريط */
+      height: calc(100vh - 70px);
       border: none;
+    }
+
+    .main-content {
+      margin-top: 70px;
     }
   </style>
 </head>
 <body>
 
-  <!-- شريط معلومات المستخدم -->
+  <!-- معلومات المستخدم -->
   <div id="user-info">
     <span id="user-name">جارٍ التحميل...</span>
     <img id="user-pic" src="" alt="الصورة"/>
   </div>
 
-  <!-- زر فتح القائمة -->
+  <!-- زر القائمة -->
   <button class="open-btn" onclick="toggleSidebar()">☰</button>
 
-  <!-- الشريط الجانبي -->
+  <!-- القائمة الجانبية -->
   <div class="sidebar" id="sidebar">
     <button class="close-btn" onclick="toggleSidebar()">×</button>
     <h2>لوحة التحكم</h2>
@@ -69,21 +128,63 @@
     <iframe id="content-frame" src="/Add/add-script.html"></iframe>
   </div>
 
-  <!-- سكربتات -->
-  <script>
-    function toggleSidebar() {
+  <!-- Firebase + JavaScript -->
+  <script type="module">
+    // إعداد Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyDoK427q44Fj87JhgZh2vKeUnACkjl8HDc",
+  authDomain: "treng-c6027.firebaseapp.com",
+  projectId: "treng-c6027",
+  storageBucket: "treng-c6027.appspot.com",
+  messagingSenderId: "305527546716",
+  appId: "1:305527546716:web:fd072a58200f31bb42d799",
+  measurementId: "G-3JFKFT2LT0"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // تسجيل الدخول أو التحقق من المستخدم الحالي
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("user-name").innerText = user.displayName;
+        document.getElementById("user-pic").src = user.photoURL;
+      } else {
+        signInWithPopup(auth, provider)
+          .then(result => {
+            const user = result.user;
+            document.getElementById("user-name").innerText = user.displayName;
+            document.getElementById("user-pic").src = user.photoURL;
+          })
+          .catch(error => {
+            alert("فشل تسجيل الدخول!");
+            console.error(error);
+          });
+      }
+    });
+
+    // تسجيل الخروج
+    window.logout = function () {
+      signOut(auth).then(() => {
+        alert("تم تسجيل الخروج");
+        location.reload();
+      });
+    };
+
+    // القائمة الجانبية
+    window.toggleSidebar = function () {
       const sidebar = document.getElementById("sidebar");
       sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
     }
 
-    function loadPage(page) {
+    // تحميل الصفحة داخل iframe
+    window.loadPage = function (page) {
       document.getElementById("content-frame").src = page;
     }
   </script>
-
-  <!-- Firebase & Admin -->
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="admin.js"></script>
-
 </body>
 </html>
