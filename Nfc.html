@@ -2,38 +2,43 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>NFC Reader</title>
+  <title>قارئ NFC</title>
 </head>
 <body>
-  <h1>قراءة بيانات NFC</h1>
+  <h1>مرر البطاقة</h1>
   <button id="read">ابدأ القراءة</button>
   <p id="output"></p>
 
   <script>
-    const readBtn = document.getElementById('read');
     const output = document.getElementById('output');
 
-    readBtn.addEventListener('click', async () => {
+    document.getElementById('read').addEventListener('click', async () => {
       if ('NDEFReader' in window) {
         try {
           const ndef = new NDEFReader();
           await ndef.scan();
-          output.textContent = "جاهز لقراءة NFC...";
+          output.textContent = "بانتظار قراءة البطاقة...";
 
           ndef.onreading = event => {
             const decoder = new TextDecoder();
             for (const record of event.message.records) {
               if (record.recordType === "text") {
                 const text = decoder.decode(record.data);
-                output.textContent = `تمت القراءة: ${text}`;
+                
+                // تحقق إذا كانت تحتوي على "VISA"
+                if (text.includes("VISA")) {
+                  output.textContent = "هذا مستر قارئ";
+                } else {
+                  output.textContent = `تمت القراءة: ${text}`;
+                }
               }
             }
           };
         } catch (error) {
-          output.textContent = `خطأ: ${error}`;
+          output.textContent = `حدث خطأ: ${error}`;
         }
       } else {
-        output.textContent = "متصفحك لا يدعم Web NFC";
+        output.textContent = "المتصفح لا يدعم Web NFC";
       }
     });
   </script>
