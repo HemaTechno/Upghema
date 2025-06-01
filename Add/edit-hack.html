@@ -90,7 +90,7 @@
 
         function fetchScripts() {
             tableBody.innerHTML = "";
-            db.collection("scripts").get().then(snapshot => {
+            db.collection("hack").get().then(snapshot => {
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const row = document.createElement('tr');
