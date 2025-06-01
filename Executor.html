@@ -31,7 +31,7 @@
 <div id="scriptsContainer"></div>
 
 <script>
-    db.collection("scripts").orderBy("id", "desc").get().then((querySnapshot) => {
+    db.collection("hack").orderBy("id", "desc").get().then((querySnapshot) => {
         const scriptsContainer = document.getElementById("scriptsContainer");
         querySnapshot.forEach((doc) => {
             const scriptData = doc.data();
