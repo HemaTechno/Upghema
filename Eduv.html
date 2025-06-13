@@ -1,0 +1,88 @@
+<!-- صفحة رفع الفيديو -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رفع الفيديو - منصة التعليم</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f5f5f5;
+      padding: 40px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    input[type="file"] {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #2196f3;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .link {
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>رفع الفيديو</h2>
+    <form id="uploadForm">
+      <input type="file" id="videoFile" accept="video/*" required />
+      <button type="submit">رفع</button>
+    </form>
+    <div class="link" id="watchLink"></div>
+  </div>
+
+  <script>
+    // إعداد Firebase
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+
+    const form = document.getElementById("uploadForm");
+    const watchLink = document.getElementById("watchLink");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const file = document.getElementById("videoFile").files[0];
+      if (!file) return;
+
+      const fileRef = storage.ref().child(`videos/${Date.now()}_${file.name}`);
+      try {
+        await fileRef.put(file);
+        const fileUrl = await fileRef.getDownloadURL();
+        const fileId = encodeURIComponent(fileRef.fullPath);
+
+        watchLink.innerHTML = `<p>تم الرفع! <br> <a href="watch.html?id=${fileId}">مشاهدة الفيديو في Ink Player</a></p>`;
+      } catch (err) {
+        alert("حدث خطأ أثناء الرفع: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
+
+<!-- صفحة المشاهدة -->
