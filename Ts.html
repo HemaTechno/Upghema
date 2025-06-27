@@ -2,21 +2,56 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>فحص وتشفير الأكواد</title>
+  <title>موقع تشفير الأكواد</title>
   <style>
-    body { background: #111; color: #fff; font-family: Tahoma; text-align: center; padding: 20px; direction: rtl; }
-    textarea { width: 90%; height: 200px; background: #222; color: #0f0; border: 1px solid #444; padding: 10px; margin-bottom: 20px; resize: vertical; }
-    button { padding: 10px 20px; background: #007bff; color: white; border: none; margin: 10px; cursor: pointer; }
-    .output { background: #333; color: #0ff; padding: 10px; margin-top: 10px; word-break: break-word; }
-    iframe { border: 1px solid #555; width: 100%; height: 300px; margin-top: 20px; background: white; }
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Tahoma;
+      text-align: center;
+      padding: 20px;
+      direction: rtl;
+    }
+    textarea {
+      width: 90%;
+      height: 200px;
+      background: #222;
+      color: #0f0;
+      border: 1px solid #444;
+      padding: 10px;
+      margin-bottom: 20px;
+      resize: vertical;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .output {
+      background: #333;
+      color: #0ff;
+      padding: 10px;
+      margin-top: 10px;
+      word-break: break-word;
+    }
+    iframe {
+      border: 1px solid #555;
+      width: 100%;
+      height: 300px;
+      margin-top: 20px;
+      background: white;
+    }
   </style>
 </head>
 <body>
 
-  <h1>🔍 فحص وتشفير الأكواد</h1>
+  <h1>🔐 موقع تشفير الأكواد (JS / HTML)</h1>
   <textarea id="input" placeholder="اكتب كود JavaScript أو HTML هنا..."></textarea><br>
-  <button onclick="processCode()">فحص وتشفير</button>
-  <button onclick="copy()">نسخ النتيجة</button>
+  <button onclick="processCode()">🔒 فحص وتشفير</button>
+  <button onclick="copy()">📋 نسخ التشفير</button>
 
   <div class="output" id="status"></div>
   <h3>🔐 الكود المشفر:</h3>
@@ -37,25 +72,42 @@
       output.innerText = '';
       status.innerText = '';
 
+      if (!code.trim()) {
+        status.innerText = "❗ الرجاء إدخال كود أولًا.";
+        return;
+      }
+
       if (isHTML) {
         try {
-          iframe.srcdoc = code;
+          // تحويل HTML إلى document.write
+          const escaped = code.replace(/`/g, "\\`");
+          const wrapperCode = `document.write(\`${escaped}\`)`;
 
-          // فحص إذا الصفحة تظهر بدون مشاكل (أساسي فقط)
-          setTimeout(() => {
-            status.innerText = "✅ تم عرض كود HTML بنجاح";
-            output.innerText = "❗ لا يتم تشفير HTML فقط يتم عرضه.";
-          }, 1000);
+          // فحص الكود
+          new Function(wrapperCode)();
+
+          // تشفيره
+          const obfuscated = JavaScriptObfuscator.obfuscate(wrapperCode, {
+            compact: true,
+            controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 1,
+            stringArray: true,
+            stringArrayEncoding: ['base64'],
+            stringArrayThreshold: 1
+          }).getObfuscatedCode();
+
+          output.innerText = obfuscated;
+          status.innerText = "✅ تم تشفير كود HTML بنجاح.";
+          iframe.srcdoc = `<html><body><script>${obfuscated}<\/script></body></html>`;
+
         } catch (err) {
-          status.innerText = "❌ خطأ في كود HTML: " + err.message;
+          status.innerText = "❌ الكود يحتوي على خطأ: " + err.message;
         }
 
       } else {
         try {
-          // فحص الكود قبل التشفير
-          new Function(code)(); // استخدام Function أفضل من eval
+          new Function(code)();
 
-          // لو مفيش خطأ، شفر الكود
           const obfuscated = JavaScriptObfuscator.obfuscate(code, {
             compact: true,
             controlFlowFlattening: true,
@@ -66,19 +118,21 @@
           }).getObfuscatedCode();
 
           output.innerText = obfuscated;
-          status.innerText = "✅ الكود صحيح وتم تشفيره بنجاح";
-
-          const testHTML = `<html><body><script>${obfuscated}<\/script></body></html>`;
-          iframe.srcdoc = testHTML;
+          status.innerText = "✅ تم تشفير كود JavaScript بنجاح.";
+          iframe.srcdoc = `<html><body><script>${obfuscated}<\/script></body></html>`;
 
         } catch (err) {
-          status.innerText = "❌ الكود يحتوي على خطأ ولن يتم تشفيره: " + err.message;
+          status.innerText = "❌ الكود يحتوي على خطأ: " + err.message;
         }
       }
     }
 
     function copy() {
       const text = document.getElementById("output").innerText;
+      if (!text) {
+        alert("❗ لا يوجد شيء لنسخه.");
+        return;
+      }
       navigator.clipboard.writeText(text).then(() => {
         alert("✅ تم نسخ الكود المشفر!");
       });
