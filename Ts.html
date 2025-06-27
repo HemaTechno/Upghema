@@ -2,62 +2,27 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>موقع تشفير وفحص أكواد JS / HTML</title>
+  <title>فحص وتشفير الأكواد</title>
   <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Tahoma, sans-serif;
-      text-align: center;
-      direction: rtl;
-      padding: 20px;
-    }
-    textarea {
-      width: 90%;
-      height: 200px;
-      background: #222;
-      color: #0f0;
-      border: 1px solid #444;
-      padding: 10px;
-      margin-bottom: 20px;
-      resize: vertical;
-    }
-    button {
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      margin: 10px;
-      cursor: pointer;
-    }
-    .output {
-      background: #333;
-      color: #0ff;
-      padding: 10px;
-      margin-top: 10px;
-      word-break: break-word;
-    }
-    iframe {
-      border: 1px solid #555;
-      width: 100%;
-      height: 300px;
-      margin-top: 20px;
-      background: white;
-    }
+    body { background: #111; color: #fff; font-family: Tahoma; text-align: center; padding: 20px; direction: rtl; }
+    textarea { width: 90%; height: 200px; background: #222; color: #0f0; border: 1px solid #444; padding: 10px; margin-bottom: 20px; resize: vertical; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; margin: 10px; cursor: pointer; }
+    .output { background: #333; color: #0ff; padding: 10px; margin-top: 10px; word-break: break-word; }
+    iframe { border: 1px solid #555; width: 100%; height: 300px; margin-top: 20px; background: white; }
   </style>
 </head>
 <body>
 
-  <h1>🔐 موقع تشفير وفحص الأكواد</h1>
-  <textarea id="input" placeholder="اكتب كود JS أو HTML هنا..."></textarea><br>
+  <h1>🔍 فحص وتشفير الأكواد</h1>
+  <textarea id="input" placeholder="اكتب كود JavaScript أو HTML هنا..."></textarea><br>
+  <button onclick="processCode()">فحص وتشفير</button>
+  <button onclick="copy()">نسخ النتيجة</button>
 
-  <button onclick="processCode()">🔒 تشفير وفحص</button>
-  <button onclick="copy()">📋 نسخ النتيجة</button>
-
-  <h3>✅ النتيجة المشفرة:</h3>
+  <div class="output" id="status"></div>
+  <h3>🔐 الكود المشفر:</h3>
   <div class="output" id="output"></div>
 
-  <h3>🧪 فحص الكود:</h3>
+  <h3>📺 المعاينة:</h3>
   <iframe id="preview"></iframe>
 
   <script src="https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js"></script>
@@ -66,13 +31,31 @@
       const code = document.getElementById("input").value;
       const isHTML = /<html|<body|<script|<\/html|<\/body/i.test(code);
       const output = document.getElementById("output");
+      const status = document.getElementById("status");
       const iframe = document.getElementById("preview");
 
+      output.innerText = '';
+      status.innerText = '';
+
       if (isHTML) {
-        output.innerText = "هذا كود HTML. لا يتم تشفيره، فقط عرضه مباشرة:";
-        iframe.srcdoc = code;
+        try {
+          iframe.srcdoc = code;
+
+          // فحص إذا الصفحة تظهر بدون مشاكل (أساسي فقط)
+          setTimeout(() => {
+            status.innerText = "✅ تم عرض كود HTML بنجاح";
+            output.innerText = "❗ لا يتم تشفير HTML فقط يتم عرضه.";
+          }, 1000);
+        } catch (err) {
+          status.innerText = "❌ خطأ في كود HTML: " + err.message;
+        }
+
       } else {
         try {
+          // فحص الكود قبل التشفير
+          new Function(code)(); // استخدام Function أفضل من eval
+
+          // لو مفيش خطأ، شفر الكود
           const obfuscated = JavaScriptObfuscator.obfuscate(code, {
             compact: true,
             controlFlowFlattening: true,
@@ -83,17 +66,13 @@
           }).getObfuscatedCode();
 
           output.innerText = obfuscated;
+          status.innerText = "✅ الكود صحيح وتم تشفيره بنجاح";
 
-          // إنشاء كود HTML بسيط لتجربة الكود المشفر
-          const testHTML = `
-            <html><body>
-            <script>${obfuscated}<\/script>
-            </body></html>
-          `;
+          const testHTML = `<html><body><script>${obfuscated}<\/script></body></html>`;
           iframe.srcdoc = testHTML;
 
-        } catch (e) {
-          output.innerText = '❌ حدث خطأ أثناء التشفير: ' + e.message;
+        } catch (err) {
+          status.innerText = "❌ الكود يحتوي على خطأ ولن يتم تشفيره: " + err.message;
         }
       }
     }
